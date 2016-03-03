@@ -13,7 +13,9 @@ import javafx.scene.layout.Pane;
  */
 public class App extends Application {
 
-	public void start(Stage primaryStage) {
+	public static Stage primaryStage = new Stage();
+	
+	public void start(Stage p) {
 		try {	//load GUI.fxml to new pane, create new scene, put it in primaryStage, all that fun stuff
 			Pane mainWindow = (Pane) FXMLLoader.load(getClass().getResource("guiMain.fxml"));
 			Scene scene = new Scene(mainWindow);

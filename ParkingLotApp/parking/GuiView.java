@@ -8,19 +8,21 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.highgui.Highgui;
 import javafx.fxml.Initializable;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * @author Joshua Swain
@@ -30,6 +32,8 @@ import javafx.stage.Stage;
 
 public class GuiView implements Initializable {
 
+	@FXML private MenuItem menuClose;
+	@FXML private MenuItem menuAbout;
     @FXML private TabPane viewTabPane;
     @FXML private Tab webcamTab;
     @FXML private ImageView webcamView;
@@ -41,39 +45,39 @@ public class GuiView implements Initializable {
     @FXML private CheckBox checkBocLabelOverlay;
     @FXML private Tab detailTab;
     @FXML private GridPane parkingGridPane;
-    @FXML private Circle spotStatusGrid1;
-    @FXML private Circle spotStatusGrid2;
-    @FXML private Circle spotStatusGrid3;
-    @FXML private Circle spotStatusGrid4;
-    @FXML private Circle spotStatusGrid5;
-    @FXML private Circle spotStatusGrid6;
-    @FXML private Circle spotStatusGrid7;
-    @FXML private Circle spotStatusGrid8;
-    @FXML private Circle spotStatusGrid9;
-    @FXML private Circle spotStatusGrid10;
-    @FXML private Circle spotStatusGrid11;
-    @FXML private Circle spotStatusGrid12;
-    @FXML private Circle spotStatusGrid13;
-    @FXML private Circle spotStatusGrid14;
-    @FXML private Circle spotStatusGrid15;
-    @FXML private Circle spotStatusGrid16;
-    @FXML private Circle spotStatusGrid17;
-    @FXML private Circle spotStatusGrid18;
-    @FXML private Circle spotStatusGrid19;
-    @FXML private Circle spotStatusGrid20;
-    @FXML private Circle spotStatusGrid21;
-    @FXML private Circle spotStatusGrid22;
-    @FXML private Circle spotStatusGrid23;
-    @FXML private Circle spotStatusGrid24;
-    @FXML private Circle spotStatusGrid25;
-    @FXML private Circle spotStatusGrid26;
-    @FXML private Circle spotStatusGrid27;
-    @FXML private Circle spotStatusGrid28;
-    @FXML private Circle spotStatusGrid29;
+    @FXML private ImageView carIcon1;
+    @FXML private ImageView carIcon2;
+    @FXML private ImageView carIcon3;
+    @FXML private ImageView carIcon4;
+    @FXML private ImageView carIcon5;
+    @FXML private ImageView carIcon6;
+    @FXML private ImageView carIcon7;
+    @FXML private ImageView carIcon8;
+    @FXML private ImageView carIcon9;
+    @FXML private ImageView carIcon10;
+    @FXML private ImageView carIcon11;
+    @FXML private ImageView carIcon12;
+    @FXML private ImageView carIcon13;
+    @FXML private ImageView carIcon14;
+    @FXML private ImageView carIcon15;
+    @FXML private ImageView carIcon16;
+    @FXML private ImageView carIcon17;
+    @FXML private ImageView carIcon18;
+    @FXML private ImageView carIcon19;
+    @FXML private ImageView carIcon20;
+    @FXML private ImageView carIcon21;
+    @FXML private ImageView carIcon22;
+    @FXML private ImageView carIcon23;
+    @FXML private ImageView carIcon24;
+    @FXML private ImageView carIcon25;
+    @FXML private ImageView carIcon26;
+    @FXML private ImageView carIcon27;
+    @FXML private ImageView carIcon28;
     @FXML private Text gridLastUpdateText;
     @FXML private Text currentSpotsAvailableText;
 
     private Image image;
+    
 	
 	public void convertImage() {
 		Mat mat = WebCommunications.image;
@@ -82,11 +86,52 @@ public class GuiView implements Initializable {
 		Highgui.imencode(".bmp", mat, byteMat);
 		image = new Image(new ByteArrayInputStream(byteMat.toArray()));
 	}
-
+	
 	public void finalize() throws Throwable {
 
 	}
 	public void initialize(URL arg0, ResourceBundle arg1){
+		// Event handler to close application using Red X
+		App.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent t) {
+				Platform.exit();
+			}
+		});
 		
+		// Event handlers for menu items
+		menuClose.setOnAction(e -> {	//<File-Close>
+			Platform.exit();
+		});
+		
+		// Clear the grid on startup
+		carIcon1.setVisible(false);
+		carIcon2.setVisible(false);
+		carIcon3.setVisible(false);
+		carIcon4.setVisible(false);
+		carIcon5.setVisible(false);
+		carIcon6.setVisible(false);
+		carIcon7.setVisible(false);
+		carIcon8.setVisible(false);
+		carIcon9.setVisible(false);
+		carIcon10.setVisible(false);
+		carIcon11.setVisible(false);
+		carIcon12.setVisible(false);
+		carIcon13.setVisible(false);
+		carIcon14.setVisible(false);
+		carIcon15.setVisible(false);
+		carIcon16.setVisible(false);
+		carIcon17.setVisible(false);
+		carIcon18.setVisible(false);
+		carIcon19.setVisible(false);
+		carIcon20.setVisible(false);
+		carIcon21.setVisible(false);
+		carIcon22.setVisible(false);
+		carIcon23.setVisible(false);
+		carIcon24.setVisible(false);
+		carIcon25.setVisible(false);
+		carIcon26.setVisible(false);
+		carIcon27.setVisible(false);
+		carIcon28.setVisible(false);
 	}
 } //end GuiView
