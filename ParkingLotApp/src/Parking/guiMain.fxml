@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Parking.GuiView">
+   <children>
+      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TabPane fx:id="viewTabPane" layoutY="27.0" prefHeight="287.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="webcamTab" text="Webcam">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="600.0">
+                     <children>
+                        <ImageView fx:id="webcamView" fitHeight="250.5" fitWidth="400.5" layoutX="196.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../main/resources/blankImage.jpg" />
+                           </image>
+                        </ImageView>
+                        <Text fx:id="imageLastUpdateText" layoutX="30.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8888 EST 88 January 8888" />
+                        <DatePicker fx:id="predictionDateSelector" layoutX="30.0" layoutY="109.0" prefHeight="25.0" prefWidth="123.0" promptText="select date" />
+                        <ComboBox fx:id="predictionTimeSelector" editable="true" layoutX="30.0" layoutY="144.0" prefHeight="25.0" prefWidth="123.0" promptText="select time" />
+                        <Button fx:id="predictionButton" layoutX="30.0" layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Predict" />
+                        <TextField fx:id="predictionOutputField" editable="false" layoutX="122.0" layoutY="184.0" prefHeight="25.0" prefWidth="41.0" promptText="NaN" />
+                        <CheckBox fx:id="checkBocLabelOverlay" layoutX="23.0" layoutY="232.0" mnemonicParsing="false" text="Overlay spot labels" />
+                        <Text layoutX="23.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image last updated:" />
+                        <Text layoutX="22.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spot predictor:" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="detailTab" text="Detail">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Separator layoutY="314.0" prefHeight="25.0" prefWidth="600.0" />
+      <GridPane fx:id="parkingGridPane" alignment="CENTER" gridLinesVisible="true" layoutX="34.0" layoutY="351.0" prefHeight="127.0" prefWidth="533.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="11" />
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="12" />
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="8" GridPane.rowIndex="2" />
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="9" GridPane.rowIndex="2" />
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="10" GridPane.rowIndex="2" />
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="11" GridPane.rowIndex="2" />
+            <Rectangle arcWidth="5.0" height="43.0" stroke="BLACK" strokeType="INSIDE" width="41.0" GridPane.columnIndex="12" GridPane.rowIndex="2" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="5" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="6" GridPane.columnIndex="6" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="7" GridPane.columnIndex="7" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="8" GridPane.columnIndex="8" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="9" GridPane.columnIndex="9" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="10" GridPane.columnIndex="10" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="11" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="12" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="13" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="14" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="15" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="16" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="17" GridPane.columnIndex="6" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="18" GridPane.columnIndex="7" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="19" GridPane.columnIndex="8" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="20" GridPane.columnIndex="9" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="21" GridPane.columnIndex="10" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="22" GridPane.columnIndex="11" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="23" GridPane.columnIndex="12" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="24" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="26" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="25" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="27" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="28" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="29" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <Circle fx:id="spotStatusGrid1" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Circle fx:id="spotStatusGrid2" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Circle fx:id="spotStatusGrid3" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <Circle fx:id="spotStatusGrid4" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+            <Circle fx:id="spotStatusGrid5" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
+            <Circle fx:id="spotStatusGrid6" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="6" GridPane.halignment="CENTER" />
+            <Circle fx:id="spotStatusGrid7" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="7" GridPane.halignment="CENTER" />
+            <Circle fx:id="spotStatusGrid8" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="8" GridPane.halignment="CENTER" />
+            <Circle fx:id="spotStatusGrid9" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="9" GridPane.halignment="CENTER" />
+            <Circle fx:id="spotStatusGrid10" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="10" GridPane.halignment="CENTER" />
+            <Circle fx:id="spotStatusGrid11" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid12" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid13" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid14" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid15" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid16" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid17" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid18" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid19" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid20" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid21" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid22" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid23" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="spotStatusGrid24" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Circle fx:id="spotStatusGrid25" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Circle fx:id="spotStatusGrid26" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Circle fx:id="spotStatusGrid27" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Circle fx:id="spotStatusGrid28" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Circle fx:id="spotStatusGrid29" fill="RED" radius="12.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <Text layoutX="42.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last updated:" />
+      <Text layoutX="362.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current available spots:" />
+      <Text fx:id="gridLastUpdateText" layoutX="122.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8888 EST 88 January 8888" />
+      <Text fx:id="currentSpotsAvailableText" layoutX="492.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="88" />
+   </children>
+</Pane>
