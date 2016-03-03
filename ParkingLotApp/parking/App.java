@@ -34,6 +34,6 @@ public class App extends Application {
 	{
 		launch(args);
 		
-		//WebCommunications web = new WebCommunications() TODO	
+		//WebCommunications web = new WebCommunications();
 	}
 }//end App
