@@ -1,4 +1,4 @@
-package Parking;
+package parking;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Point;
