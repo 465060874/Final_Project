@@ -1,4 +1,4 @@
-package Parking;
+package parking;
 
 import org.opencv.core.Range;
 import org.opencv.core.Scalar;

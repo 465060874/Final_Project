@@ -1,4 +1,4 @@
-package Parking;
+package parking;
 
 import java.io.File;
 

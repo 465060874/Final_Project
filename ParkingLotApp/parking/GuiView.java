@@ -1,4 +1,4 @@
-package Parking;
+package parking;
 
 import javafx.scene.image.Image;
 import java.io.ByteArrayInputStream;
