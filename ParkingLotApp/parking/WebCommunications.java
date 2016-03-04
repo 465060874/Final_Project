@@ -42,6 +42,15 @@ public class WebCommunications {
 
 	}
 
+	/**
+	 * @param String imageFileName
+	 * @return void
+	 * @author Ian McElhenny
+	 * 
+	 * This method takes an argument of a file location then processes the image in that file to find all the parking spots that have 
+	 * been hard codded in the ParkinLotGrid.java file. It processes and populates an object of type ParkingLotGrid
+	 */
+	
 	public void processImage()
 	{
 		////////////////////////
