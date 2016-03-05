@@ -32,8 +32,8 @@ public class App extends Application {
 	
 	public static void main(String[] args)
 	{
-		launch(args);
+//		launch(args);
 		
-		//WebCommunications web = new WebCommunications();
+		WebCommunications web = new WebCommunications();
 	}
 }//end App

@@ -72,7 +72,7 @@ public class WebCommunications {
 		System.loadLibrary("opencv_java2411");
 		
 	    //Load image from file
-		Mat img = Highgui.imread("src/main/resources/bottomOpen.JPG");
+		Mat img = Highgui.imread("src/main/resources/ParkingOpen.JPG");
 		image = img;	// added to allow GuiView access to image TODO clean this up
 		
 		//LOOP:
@@ -130,7 +130,7 @@ public class WebCommunications {
 //		    System.out.println(String.format("Writing %s", filename));
 //		    Highgui.imwrite(filename, crop);
 		
-		    Image image1 = Mat2BufferedImage(mask);
+		    Image image1 = Mat2BufferedImage(crop);
 		    displayImage(image1);
 		    
 		    /////////
