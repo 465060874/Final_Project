@@ -40,7 +40,7 @@ public class WebCommunications implements MouseListener
     
 	public WebCommunications()
 	{
-		processImage(10);
+		processImage();
 		System.loadLibrary("opencv_java2411");
 
 	}
@@ -83,6 +83,10 @@ public class WebCommunications implements MouseListener
 		//loop through array or parking lot and process each spot
 		for(int i = 0; i <= parkingLot.getSpotArray().length-1; i++)
 		{
+			//Set black and white count to zero from last run
+			black = 0;
+			white = 0;
+			
 			//Crop to the Nth spot
 			crop = img.submat(spotArray[i].getYRange(), spotArray[i].getXRange());
 			
@@ -132,8 +136,10 @@ public class WebCommunications implements MouseListener
 				parkingLot.setStatus(i, false);//spot occupied
 			}
 			
-			Image image1 = Mat2BufferedImage(mask);
+			Image image1 = Mat2BufferedImage(crop);
 		    displayImage(image1);
+			Image image2 = Mat2BufferedImage(mask);
+		    displayImage(image2);
 		}
 		
 	}
@@ -180,7 +186,7 @@ public class WebCommunications implements MouseListener
 			
 			//Mask img with upper and lower limits
 			Core.inRange(hsv, spotArray[i].getLowerHsv(), spotArray[i].getUpperHsv(), mask);
-
+			
 			//Count the white pixels and black pixels
 			for(int x = 0; x <= mask.size().width - 1; x++)
 			{
