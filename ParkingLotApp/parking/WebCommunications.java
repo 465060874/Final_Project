@@ -30,18 +30,31 @@ public class WebCommunications {
 	
 	public static Mat image;	// added to allow GuiView access to image TODO clean this up
 
+	/**
+	 * TODO
+	 */
 	public WebCommunications()
 	{
 		processImage();
 	}
 
+	/**
+	 * TODO
+	 */
 	public void finalize() throws Throwable {
 
 	}
+	
+	/**
+	 * TODO
+	 */
 	public void getImage(){
 
 	}
 
+	/**
+	 * TODO
+	 */
 	public void processImage()
 	{
 		////////////////////////
@@ -132,6 +145,12 @@ public class WebCommunications {
 //			System.out.print(hsv.get(40, 15)[2]); //[110, 37, 104]
 
 	}
+	
+	/**
+	 * TODO
+	 * @param m
+	 * @return
+	 */
 	public BufferedImage Mat2BufferedImage(Mat m)
 	{
 		// Fastest code
@@ -150,6 +169,10 @@ public class WebCommunications {
 		return image;
 		}
 	
+	/**
+	 * TODO
+	 * @param img2
+	 */
 	public void displayImage(Image img2) 
 	{
     	//BufferedImage img=ImageIO.read(new File("/HelloOpenCV/lena.png"));
@@ -163,4 +186,5 @@ public class WebCommunications {
     	frame.setVisible(true);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	}
+	
 }//end WebCommunications
