@@ -4,6 +4,8 @@ import javafx.scene.image.Image;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -86,6 +88,10 @@ public class GuiView implements Initializable {
     private Timer timer;		//Timer object used to update webcam view
     private File imageFile;		//File object used to pull webcam image
     
+    // Date and Time
+	SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd");
+	SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss z");
+    
 	/**
 	 * Takes the public Mat object image from WebCommunications and converts it to a JavaFX Image object
 	 */
@@ -164,6 +170,8 @@ public class GuiView implements Initializable {
 				imageFile = new File("src/main/resources/bottomOpen.JPG");		//pull image file from system TODO change path
 				image = new Image(imageFile.toURI().toString());				//create Image from File
 				webcamView.setImage(image);										//display Image in GUI
+				imageLastUpdateText.setText(time.format(Calendar.getInstance().getTime()) 	//update update time
+						+ " " + date.format(Calendar.getInstance().getTime()));
 			}
 		}, 0, 1000);	// change webcam view update interval here!
 	}

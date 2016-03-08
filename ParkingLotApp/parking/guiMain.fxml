@@ -41,7 +41,7 @@
                               <Image url="@../src/main/resources/blankImage.jpg" />
                            </image>
                         </ImageView>
-                        <Text fx:id="imageLastUpdateText" layoutX="33.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8888 EST 88 January 8888" />
+                        <Text fx:id="imageLastUpdateText" layoutX="33.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HH:mm:ss zzz yyyy.MM.dd" />
                         <DatePicker fx:id="predictionDateSelector" layoutX="33.0" layoutY="109.0" prefHeight="25.0" prefWidth="123.0" promptText="select date" />
                         <ComboBox fx:id="predictionTimeSelector" editable="true" layoutX="33.0" layoutY="144.0" prefHeight="25.0" prefWidth="123.0" promptText="select time" />
                         <Button fx:id="predictionButton" layoutX="33.0" layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Predict" />
@@ -377,7 +377,7 @@
       </GridPane>
       <Text layoutX="412.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last updated:" />
       <Text layoutX="412.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current available spots:" />
-      <Text fx:id="gridLastUpdateText" layoutX="422.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8888 EST 88 January 8888" />
+      <Text fx:id="gridLastUpdateText" layoutX="422.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HH:mm:ss zzz yyyy.MM.dd" />
       <Text fx:id="currentSpotsAvailableText" layoutX="542.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="88" />
       <Separator layoutY="309.0" prefHeight="17.0" prefWidth="625.0" />
    </children>
