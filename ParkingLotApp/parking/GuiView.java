@@ -2,8 +2,12 @@ package parking;
 
 import javafx.scene.image.Image;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.highgui.Highgui;
@@ -77,7 +81,10 @@ public class GuiView implements Initializable {
     @FXML private Text gridLastUpdateText;
     @FXML private Text currentSpotsAvailableText;
 
-    private Image image;
+    // Class Variables
+    private Image image;		//the image object to be displayed in the webcam view
+    private Timer timer;		//Timer object used to update webcam view
+    private File imageFile;		//File object used to pull webcam image
     
 	/**
 	 * Takes the public Mat object image from WebCommunications and converts it to a JavaFX Image object
@@ -114,6 +121,7 @@ public class GuiView implements Initializable {
 		
 		// Event handlers for menu items
 		menuClose.setOnAction(e -> {	//<File-Close>
+			//TODO figure out how to stop the timer ...
 			Platform.exit();
 		});
 		
@@ -148,5 +156,15 @@ public class GuiView implements Initializable {
 		carIcon28.setVisible(false);
 		
 		// timer task to update webcam feed TODO
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				System.out.println("test");										//test code to verify update interval TODO remove
+				imageFile = new File("src/main/resources/bottomOpen.JPG");		//pull image file from system TODO change path
+				image = new Image(imageFile.toURI().toString());				//create Image from File
+				webcamView.setImage(image);										//display Image in GUI
+			}
+		}, 0, 1000);	// change webcam view update interval here!
 	}
 } //end GuiView
