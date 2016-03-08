@@ -34,6 +34,7 @@ public class GuiView implements Initializable {
 
 	@FXML private MenuItem menuClose;
 	@FXML private MenuItem menuAbout;
+	@FXML private MenuItem menuSaveFrame;
     @FXML private TabPane viewTabPane;
     @FXML private Tab webcamTab;
     @FXML private ImageView webcamView;
