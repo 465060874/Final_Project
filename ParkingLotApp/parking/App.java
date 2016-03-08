@@ -15,6 +15,11 @@ public class App extends Application {
 
 	public static Stage primaryStage = new Stage();
 	
+	/**
+	 * Load GUI structure from FXML and show GUI
+	 * 
+	 * @param p a Stage object
+	 */
 	public void start(Stage p) {
 		try {	//load GUI.fxml to new pane, create new scene, put it in primaryStage, all that fun stuff
 			Pane mainWindow = (Pane) FXMLLoader.load(getClass().getResource("guiMain.fxml"));
@@ -28,10 +33,17 @@ public class App extends Application {
 		}
 	}
 	
+	/**
+	 * TODO javadoc-ify this 
+	 */
 	public void finalize() throws Throwable {
 
 	}
 	
+	/**
+	 * Main method, initializes program
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
 		launch(args);

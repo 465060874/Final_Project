@@ -79,7 +79,9 @@ public class GuiView implements Initializable {
 
     private Image image;
     
-	
+	/**
+	 * Takes the public Mat object image from WebCommunications and converts it to a JavaFX Image object
+	 */
 	public void convertImage() {
 		Mat mat = WebCommunications.image;
 		
@@ -88,9 +90,19 @@ public class GuiView implements Initializable {
 		image = new Image(new ByteArrayInputStream(byteMat.toArray()));
 	}
 	
+	/**
+	 * TODO javadoc-ify this
+	 */
 	public void finalize() throws Throwable {
 
 	}
+	
+	/**
+	 * Event handlers, listeners, and other GUI-related actions
+	 * 
+	 * @param arg0
+	 * @param arg1
+	 */
 	public void initialize(URL arg0, ResourceBundle arg1){
 		// Event handler to close application using Red X
 		App.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -134,5 +146,7 @@ public class GuiView implements Initializable {
 		carIcon26.setVisible(false);
 		carIcon27.setVisible(false);
 		carIcon28.setVisible(false);
+		
+		// timer task to update webcam feed TODO
 	}
 } //end GuiView
