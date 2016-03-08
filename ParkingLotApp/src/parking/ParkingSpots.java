@@ -4,7 +4,7 @@ import org.opencv.core.Range;
 import org.opencv.core.Scalar;
 
 /**
- * @author michaelh
+ * @author Ian McElhenny
  * @version 1.0
  * @created 19-Feb-2016 5:52:32 PM
  */
@@ -38,6 +38,9 @@ public class ParkingSpots
 	{
 		isEmpty = false;
 	}
+	
+	
+	
 	
 	//The following are used by image processing
 	
@@ -73,7 +76,11 @@ public class ParkingSpots
 	{
 		return this.upperLim;
 	}
-	
+	//get method for status
+	public boolean getStatus()
+	{
+		return this.isEmpty;
+	}
 	
 	
 	

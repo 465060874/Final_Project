@@ -57,6 +57,10 @@ public class WebCommunications implements MouseListener
 
 	//****NEEDS TO ADD IMG AS ARGUMENT IN FUNCTION CALL****
 	//Takes a img of the parking lot, subdivides it into spots, process each spot in a forloop then 
+	/**
+	 * @author Ian McElhenny
+	 * Reads an image from a file name, then processes the image
+	 */
 	public void processImage()
 	{
 		System.loadLibrary("opencv_java2411");
@@ -136,95 +140,96 @@ public class WebCommunications implements MouseListener
 				parkingLot.setStatus(i, false);//spot occupied
 			}
 			
-			Image image1 = Mat2BufferedImage(crop);
-		    displayImage(image1);
+//			Image image1 = Mat2BufferedImage(crop);
+//		    displayImage(image1);
 			Image image2 = Mat2BufferedImage(mask);
 		    displayImage(image2);
 		}
-		
+		Image image3 = Mat2BufferedImage(img);
+	    displayImage(image3);
 	}
 	
-	//copy to test individual spots
-		public void processImage(int i)
-		{
-			System.loadLibrary("opencv_java2411");
+	//copy to test individual spots (TEMP)
+	public void processImage(int i)
+	{
+		System.loadLibrary("opencv_java2411");
 
-			//Load image from file
-			Mat img = Highgui.imread("src/main/resources/ParkingOpen.JPG");
-			
-			////////////////////////
-			//Initialize Variables//
-			////////////////////////
-			Mat crop;
-			Mat blur = null;
-			Mat hsv = null;
-			Mat mask = null;
-			int black = 0;
-			int white = 0;
-			double ratio = 0;
-			ParkingLotGrid parkingLot = new ParkingLotGrid();
-			//This should be dynamic but is hard coded for now.
-			parkingLot.setGridSize(28);//I, ian, counted 28 spots that i think we can process effectively in the area
-			ParkingSpots[] spotArray = parkingLot.getSpotArray();
-
-			
+		//Load image from file
+		Mat img = Highgui.imread("src/main/resources/ParkingOpen.JPG");
 		
-			//Crop to the Nth spot
-			crop = img.submat(spotArray[i].getYRange(), spotArray[i].getXRange());
-			
-			//Create a Blur, hsv, and mask matrix same size and type as crop for bilateral filter return, hsv return and mask return
-			Size size = new Size(crop.width(), crop.height());
-			blur = Mat.zeros(size , 0);
-			hsv = Mat.zeros(size , 0);
-			mask = Mat.zeros(size , 0);
+		////////////////////////
+		//Initialize Variables//
+		////////////////////////
+		Mat crop;
+		Mat blur = null;
+		Mat hsv = null;
+		Mat mask = null;
+		int black = 0;
+		int white = 0;
+		double ratio = 0;
+		ParkingLotGrid parkingLot = new ParkingLotGrid();
+		//This should be dynamic but is hard coded for now.
+		parkingLot.setGridSize(28);//I, ian, counted 28 spots that i think we can process effectively in the area
+		ParkingSpots[] spotArray = parkingLot.getSpotArray();
 
-			//bilaterally filter the image
-			Imgproc.bilateralFilter(crop, blur, 20, 75, 75);
-			
-			//Convert color space to HSV
-			Imgproc.cvtColor(blur, hsv, Imgproc.COLOR_RGB2HSV);
-			
-			//Mask img with upper and lower limits
-			Core.inRange(hsv, spotArray[i].getLowerHsv(), spotArray[i].getUpperHsv(), mask);
-			
-			//Count the white pixels and black pixels
-			for(int x = 0; x <= mask.size().width - 1; x++)
-			{
-				for(int y = 0; y <= mask.size().height - 1; y++)
-				{
-					if(mask.get(y, x)[0] == 0.0)
-					{
-						black++;
-					}
-					else if(mask.get(y, x)[0] == 255.0)
-					{
-						white++;
-					}
-				}
-			}
-			
-			System.out.println(black + ", " + white);
-			
-			//Make decision about status of spot
-			ratio = (double)white/(white+black);
-			if(ratio > 0.5)
-			{
-				System.out.println("Spot: " + (i+1) + " is open");
-				parkingLot.setStatus(i, true);//spot empty
-			}
-			else if(ratio < 0.5)
-			{
-				System.out.println("Spot: " + (i+1) + " is taken");
-				parkingLot.setStatus(i, false);//spot occupied
-			}
-			Image image1 = Mat2BufferedImage(crop);
-		    displayImage(image1);
-			Image image2 = Mat2BufferedImage(mask);
-		    displayImage(image2);
-		}
-		
 		
 	
+		//Crop to the Nth spot
+		crop = img.submat(spotArray[i].getYRange(), spotArray[i].getXRange());
+		
+		//Create a Blur, hsv, and mask matrix same size and type as crop for bilateral filter return, hsv return and mask return
+		Size size = new Size(crop.width(), crop.height());
+		blur = Mat.zeros(size , 0);
+		hsv = Mat.zeros(size , 0);
+		mask = Mat.zeros(size , 0);
+
+		//bilaterally filter the image
+		Imgproc.bilateralFilter(crop, blur, 20, 75, 75);
+		
+		//Convert color space to HSV
+		Imgproc.cvtColor(blur, hsv, Imgproc.COLOR_RGB2HSV);
+		
+		//Mask img with upper and lower limits
+		Core.inRange(hsv, spotArray[i].getLowerHsv(), spotArray[i].getUpperHsv(), mask);
+		
+		//Count the white pixels and black pixels
+		for(int x = 0; x <= mask.size().width - 1; x++)
+		{
+			for(int y = 0; y <= mask.size().height - 1; y++)
+			{
+				if(mask.get(y, x)[0] == 0.0)
+				{
+					black++;
+				}
+				else if(mask.get(y, x)[0] == 255.0)
+				{
+					white++;
+				}
+			}
+		}
+		
+		System.out.println(black + ", " + white);
+		
+		//Make decision about status of spot
+		ratio = (double)white/(white+black);
+		if(ratio > 0.5)
+		{
+			System.out.println("Spot: " + (i+1) + " is open");
+			parkingLot.setStatus(i, true);//spot empty
+		}
+		else if(ratio < 0.5)
+		{
+			System.out.println("Spot: " + (i+1) + " is taken");
+			parkingLot.setStatus(i, false);//spot occupied
+		}
+		Image image1 = Mat2BufferedImage(crop);
+	    displayImage(image1);
+		Image image2 = Mat2BufferedImage(mask);
+	    displayImage(image2);
+	}
+	
+		
+	//(TEMP)
 	public void procImage()
 	{
 		////////////////////////
