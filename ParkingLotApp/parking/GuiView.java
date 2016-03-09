@@ -87,6 +87,7 @@ public class GuiView implements Initializable {
     // Class Variables
     private Image image;		//the image object to be displayed in the webcam view
     private Timer timer;		//Timer object used to update webcam view
+    private Timer timer2;
     private File imageFile;		//File object used to pull webcam image
     
     // Date and Time
@@ -129,6 +130,7 @@ public class GuiView implements Initializable {
 		// Event handlers for menu items
 		menuClose.setOnAction(e -> {	//<File-Close>
 			timer.cancel();
+			timer2.cancel();
 			try {
 				WebCommunications.grabber.stop();
 			} catch (Exception ed) {
@@ -142,6 +144,7 @@ public class GuiView implements Initializable {
 			@Override
 			public void handle(WindowEvent t) {
 				timer.cancel();
+				timer2.cancel();
 				try {
 					WebCommunications.grabber.stop();
 				} catch (Exception ed) {
@@ -193,7 +196,7 @@ public class GuiView implements Initializable {
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				System.out.println("test");										//test code to verify update interval TODO remove
+				//System.out.println("test");										//test code to verify update interval TODO remove
 				try {															//TEST pull image
 					WebCommunications.saveImage();
 				} catch (Exception e) {
@@ -207,7 +210,7 @@ public class GuiView implements Initializable {
 			}
 		}, 0, 10);	// change webcam view update interval here!
 		
-		// timer task to update grid view
-		// TODO Ian put your shtuff in here
+		//TODO This is Ian's happy place.
+
 	}
 } //end GuiView
