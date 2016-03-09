@@ -34,9 +34,10 @@ import org.opencv.imgproc.Imgproc;
 public class WebCommunications {
 
 	private String error;
-	
+	public static FrameGrabber grabber;
 	public static Mat image;	// added to allow GuiView access to image TODO clean this up
-
+	private static Frame frame;
+	
 	/**
 	 * TODO
 	 */
@@ -55,7 +56,7 @@ public class WebCommunications {
 	/**
 	 * TODO
 	 */
-	public void getImage() throws Exception {
+	public static void getImage() throws Exception {
 		/*Use this if your library path is giving you trouble, i.e.:
 		 * Exception in thread "main" java.lang.UnsatisfiedLinkError: no opencv_java2411 in java.library.path
 		 * 
@@ -71,24 +72,33 @@ public class WebCommunications {
 		/* Use this if you know that your library path is configured correctly */
 		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
-		FrameGrabber grabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg"); 
+		grabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg"); 
 	    grabber.setFormat("mjpeg");
 	    System.out.println("Making connection...");
 		
 	    grabber.start();
 	    
-	    Frame frame1;
-		frame1 = grabber.grab();
+	    //Frame frame1 = grabber.grab();
 	    
-		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
-		BufferedImage image = javaconverter.convert(frame1);
+	    saveImage();	    	
+	    
+		
+	    //grabber.stop(); let's hope this doesn't break anything
+	}
+	
+	public static void saveImage() {
 		try {
-			ImageIO.write(image, "jpg", new File("getImageResult.jpg"));
+			frame = grabber.grab();
+		} catch (Exception fuckYouTim) {
+	    	System.out.println("No.");
+	    }
+		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
+		BufferedImage image = javaconverter.convert(frame);
+		try {
+			ImageIO.write(image, "jpg", new File("src/main/resources/getImageResult.jpg"));
 		} catch (IOException e) {
 			System.out.println("Failed.");
 		}
-		
-	    grabber.stop();
 	}
 
 	/**

@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.highgui.Highgui;
+
 import javafx.fxml.Initializable;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -127,8 +128,27 @@ public class GuiView implements Initializable {
 		
 		// Event handlers for menu items
 		menuClose.setOnAction(e -> {	//<File-Close>
-			//TODO figure out how to stop the timer ...
+			timer.cancel();
+			try {
+				WebCommunications.grabber.stop();
+			} catch (Exception ed) {
+				System.out.println("Tim is a terrible developer.");
+			}
 			Platform.exit();
+		});
+		
+		// Close program with red X
+		App.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent t) {
+				timer.cancel();
+				try {
+					WebCommunications.grabber.stop();
+				} catch (Exception ed) {
+					System.out.println("Tim is a terrible developer.");
+				}
+				Platform.exit();
+			}
 		});
 		
 		// Clear the grid on startup
@@ -161,18 +181,30 @@ public class GuiView implements Initializable {
 		carIcon27.setVisible(false);
 		carIcon28.setVisible(false);
 		
+		
+		try {
+			WebCommunications.getImage();
+		} catch (Exception e) {
+			System.out.println("Boo get :(");
+		}
+		
 		// timer task to update webcam feed TODO
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				System.out.println("test");										//test code to verify update interval TODO remove
-				imageFile = new File("src/main/resources/bottomOpen.JPG");		//pull image file from system TODO change path
+				try {															//TEST pull image
+					WebCommunications.saveImage();
+				} catch (Exception e) {
+					System.out.println("Boo save :(");
+				}
+				imageFile = new File("src/main/resources/getImageResult.JPG");		//pull image file from system TODO change path
 				image = new Image(imageFile.toURI().toString());				//create Image from File
 				webcamView.setImage(image);										//display Image in GUI
 				imageLastUpdateText.setText(time.format(Calendar.getInstance().getTime()) 	//update update time
 						+ " " + date.format(Calendar.getInstance().getTime()));
 			}
-		}, 0, 1000);	// change webcam view update interval here!
+		}, 0, 10);	// change webcam view update interval here!
 	}
 } //end GuiView
