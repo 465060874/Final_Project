@@ -1,11 +1,15 @@
 package parking;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author Josh
+ * @author Hunter Michael
  * @version 1.0
  * @created 19-Feb-2016 5:52:33 PM
  */
@@ -13,13 +17,19 @@ public class PredictionModel {
 
 	private File historicalData;
 
-	public PredictionModel(){
+	public PredictionModel()
+	{
 
 	}
-
-	public void finalize() throws Throwable {
+	
+	/**
+	 * Sprint 1: No implementation
+	 */
+	public void finalize() throws Throwable 
+	{
 
 	}
+	
 	/**
 	 * @author Hunter Michael
 	 * @throws IOException
@@ -46,11 +56,13 @@ public class PredictionModel {
 			
 			
 			//here is where we need to format the input 
-			//text to include an array from webcommunications.getParkingGrid()
+			WebCommunications webCommunications = new WebCommunications();
+			webCommunications.getParkingGrid();
 			//after the time stamp
-			parkingGrid = WebCommunications.getParkingGrid();
-			spots = parkingGrid.getSpotArray;
-			for(int i = 0; spots.length(); i++){
+			ParkingLotGrid parkingGrid = webCommunications.getParkingGrid();
+			ParkingSpots[] spots = parkingGrid.getSpotArray();
+			for(int i = 0; i <= spots.length-1; i++)
+			{
 				//the array will be converted into a string here
 			}
 			out.println(timeString);
@@ -67,7 +79,12 @@ public class PredictionModel {
 		}
 	}
 
-	public double makePrediction(){
+	/**
+	 * Sprint 1: No implementation
+	 * @return
+	 */
+	public double makePrediction()
+	{
 		return 0;
 	}
 }//end PredictionModel

@@ -11,7 +11,8 @@ import javafx.scene.layout.Pane;
  * @version 1.0
  * @created 19-Feb-2016 5:52:26 PM
  */
-public class App extends Application {
+public class App extends Application 
+{
 
 	public static Stage primaryStage = new Stage();
 	
@@ -34,7 +35,8 @@ public class App extends Application {
 	}
 	
 	/**
-	 * TODO javadoc-ify this 
+	 * 
+	 * Sprint 1: No implementation
 	 */
 	public void finalize() throws Throwable {
 
@@ -46,8 +48,9 @@ public class App extends Application {
 	 */
 	public static void main(String[] args)
 	{
+
 		launch(args);
 		
-		//WebCommunications web = new WebCommunications();
+		WebCommunications web = new WebCommunications();
 	}
 }//end App

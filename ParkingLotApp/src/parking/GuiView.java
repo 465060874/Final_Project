@@ -105,7 +105,7 @@ public class GuiView implements Initializable {
 	}
 	
 	/**
-	 * TODO javadoc-ify this
+	 * Non-Function: Sprint 1
 	 */
 	public void finalize() throws Throwable {
 
@@ -125,7 +125,7 @@ public class GuiView implements Initializable {
 				Platform.exit();
 			}
 		});
-		
+
 		// Event handlers for menu items
 		menuClose.setOnAction(e -> {	//<File-Close>
 			timer.cancel();
@@ -207,7 +207,9 @@ public class GuiView implements Initializable {
 			}
 		}, 0, 30);	// change webcam view update interval here!
 		
-		//TODO This is Ian's happy place.
+		// This is Ian's happy place.
+		WebCommunications web = new WebCommunications();
+//		web.processImage("ParkingOpen.JPG");
 
 	}
 } //end GuiView
