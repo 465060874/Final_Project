@@ -208,7 +208,7 @@ public class GuiView implements Initializable {
 				imageLastUpdateText.setText(time.format(Calendar.getInstance().getTime()) 	//update update time
 						+ " " + date.format(Calendar.getInstance().getTime()));
 			}
-		}, 0, 10);	// change webcam view update interval here!
+		}, 0, 30);	// change webcam view update interval here!
 		
 		//TODO This is Ian's happy place.
 
