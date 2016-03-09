@@ -20,7 +20,12 @@ public class PredictionModel {
 	public void finalize() throws Throwable {
 
 	}
-
+	/**
+	 * @author Hunter Michael
+	 * @throws IOException
+	 * creates a text file titled by date and appends the document with a time stamp 
+	 * and whether each spot is filled
+	 */
 	public void addToHistory() throws IOException{
 		//Get string name of file to write too
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
@@ -43,6 +48,11 @@ public class PredictionModel {
 			//here is where we need to format the input 
 			//text to include an array from webcommunications.getParkingGrid()
 			//after the time stamp
+			parkingGrid = WebCommunications.getParkingGrid();
+			spots = parkingGrid.getSpotArray;
+			for(int i = 0; spots.length(); i++){
+				//the array will be converted into a string here
+			}
 			out.println(timeString);
 			out.close();
 		}
