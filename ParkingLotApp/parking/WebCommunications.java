@@ -6,11 +6,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Range;
@@ -48,8 +55,40 @@ public class WebCommunications {
 	/**
 	 * TODO
 	 */
-	public void getImage(){
-
+	public void getImage() throws Exception {
+		/*Use this if your library path is giving you trouble, i.e.:
+		 * Exception in thread "main" java.lang.UnsatisfiedLinkError: no opencv_java2411 in java.library.path
+		 * 
+		 * Use directory of .dll file on machine...
+		 */
+		//System.load("C:/Users/tchristovich/Documents/opencv/build/java/x64/opencv_java2411.dll");
+		
+		/*
+		 * JavaCV (required for image pull)
+		 * http://search.maven.org/remotecontent?filepath=org/bytedeco/javacv/1.1/javacv-1.1-bin.zip
+		 */
+		
+		/* Use this if you know that your library path is configured correctly */
+		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		
+		FrameGrabber grabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg"); 
+	    grabber.setFormat("mjpeg");
+	    System.out.println("Making connection...");
+		
+	    grabber.start();
+	    
+	    Frame frame1;
+		frame1 = grabber.grab();
+	    
+		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
+		BufferedImage image = javaconverter.convert(frame1);
+		try {
+			ImageIO.write(image, "jpg", new File("getImageResult.jpg"));
+		} catch (IOException e) {
+			System.out.println("Failed.");
+		}
+		
+	    grabber.stop();
 	}
 
 	/**
