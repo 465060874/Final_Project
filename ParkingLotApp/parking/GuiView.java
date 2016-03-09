@@ -16,6 +16,7 @@ import org.opencv.highgui.Highgui;
 
 import javafx.fxml.Initializable;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,6 +29,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.WindowEvent;
 
@@ -50,7 +52,7 @@ public class GuiView implements Initializable {
     @FXML private ComboBox<?> predictionTimeSelector;
     @FXML private Button predictionButton;
     @FXML private TextField predictionOutputField;
-    @FXML private CheckBox checkBocLabelOverlay;
+    @FXML private CheckBox checkBoxLabelOverlay;
     @FXML private Tab detailTab;
     @FXML private GridPane parkingGridPane;
     @FXML private ImageView carIcon1;
@@ -83,6 +85,7 @@ public class GuiView implements Initializable {
     @FXML private ImageView carIcon28;
     @FXML private Text gridLastUpdateText;
     @FXML private Text currentSpotsAvailableText;
+    @FXML private Pane paneSpotLabelOverlay;
 
     // Class Variables
     private Image image;		//the image object to be displayed in the webcam view
@@ -122,6 +125,12 @@ public class GuiView implements Initializable {
 		App.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent t) {
+				timer.cancel();
+				try {
+					WebCommunications.grabber.stop();
+				} catch (Exception ed) {
+					System.out.println("Tim is a terrible developer.");
+				}
 				Platform.exit();
 			}
 		});
@@ -137,19 +146,8 @@ public class GuiView implements Initializable {
 			Platform.exit();
 		});
 		
-		// Close program with red X
-		App.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent t) {
-				timer.cancel();
-				try {
-					WebCommunications.grabber.stop();
-				} catch (Exception ed) {
-					System.out.println("Tim is a terrible developer.");
-				}
-				Platform.exit();
-			}
-		});
+		// Property binding for spot label overlay checkbox
+		paneSpotLabelOverlay.visibleProperty().bind(checkBoxLabelOverlay.selectedProperty());
 		
 		// Clear the grid on startup
 		carIcon1.setVisible(false);
@@ -181,14 +179,14 @@ public class GuiView implements Initializable {
 		carIcon27.setVisible(false);
 		carIcon28.setVisible(false);
 		
-		
+		//Initial image pull, also opens connection to webcam
 		try {
 			WebCommunications.getImage();
 		} catch (Exception e) {
 			System.out.println("Boo get :(");
 		}
 		
-		// timer task to update webcam feed TODO
+		// timer task to update webcam feed TODO make this cleaner; property binding?
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -207,9 +205,8 @@ public class GuiView implements Initializable {
 			}
 		}, 0, 30);	// change webcam view update interval here!
 		
-		// This is Ian's happy place.
+		/* This is Ian's happy place.
 		WebCommunications web = new WebCommunications();
-//		web.processImage("ParkingOpen.JPG");
-
+		web.processImage("ParkingOpen.JPG");*/
 	}
 } //end GuiView

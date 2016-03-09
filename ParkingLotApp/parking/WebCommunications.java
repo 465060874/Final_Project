@@ -109,7 +109,7 @@ public class WebCommunications
 		try {
 			frame = grabber.grab();
 		} catch (Exception e) {
-	    	System.out.println("No.");
+	    	System.out.println("No grabby grab.");
 	    }
 		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
 		BufferedImage image = javaconverter.convert(frame);

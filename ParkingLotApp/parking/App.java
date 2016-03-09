@@ -13,7 +13,6 @@ import javafx.scene.layout.Pane;
  */
 public class App extends Application 
 {
-
 	public static Stage primaryStage = new Stage();
 	
 	/**
@@ -48,9 +47,8 @@ public class App extends Application
 	 */
 	public static void main(String[] args)
 	{
-
-		launch(args);
-		
-		WebCommunications web = new WebCommunications();
+		launch(args);	
+		//WebCommunications web = new WebCommunications();
 	}
+	
 }//end App
