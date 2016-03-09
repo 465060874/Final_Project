@@ -130,7 +130,6 @@ public class GuiView implements Initializable {
 		// Event handlers for menu items
 		menuClose.setOnAction(e -> {	//<File-Close>
 			timer.cancel();
-			timer2.cancel();
 			try {
 				WebCommunications.grabber.stop();
 			} catch (Exception ed) {
@@ -144,7 +143,6 @@ public class GuiView implements Initializable {
 			@Override
 			public void handle(WindowEvent t) {
 				timer.cancel();
-				timer2.cancel();
 				try {
 					WebCommunications.grabber.stop();
 				} catch (Exception ed) {
