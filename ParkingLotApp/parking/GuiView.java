@@ -87,7 +87,6 @@ public class GuiView implements Initializable {
     // Class Variables
     private Image image;		//the image object to be displayed in the webcam view
     private Timer timer;		//Timer object used to update webcam view
-    private Timer timer2;
     private File imageFile;		//File object used to pull webcam image
     
     // Date and Time
