@@ -2,7 +2,7 @@ package parking;
 
 
 /**************************
- * THIS MAY NOT BE NEEDED *
+ * DELETE ME *
  **************************/
 
 

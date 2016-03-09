@@ -206,5 +206,8 @@ public class GuiView implements Initializable {
 						+ " " + date.format(Calendar.getInstance().getTime()));
 			}
 		}, 0, 10);	// change webcam view update interval here!
+		
+		// timer task to update grid view
+		// TODO Ian put your shtuff in here
 	}
 } //end GuiView
