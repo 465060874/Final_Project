@@ -95,7 +95,9 @@ public class WebCommunications implements MouseListener
 		int black = 0;
 		int white = 0;
 		double ratio = 0;
+		boolean oldStatus;
 		ParkingSpots[] spotArray = parkingLot.getSpotArray();
+		PredictionModel predictionModel = new PredictionModel();
 
 		
 		//loop through array or parking lot and process each spot
@@ -141,15 +143,28 @@ public class WebCommunications implements MouseListener
 			
 			System.out.println(black + ", " + white);
 			
+			//Check old status of spot to tell if it changed
+			oldStatus = parkingLot.getStatus(i);		
+			
 			//Make decision about status of spot
 			ratio = (double)white/(white+black);
 			if(ratio > 0.5)
 			{
+				if(oldStatus == false)
+				{
+					//TODO call logger function
+					predictionModel.addToHistory();
+				}
 				System.out.println("Spot: " + (i+1) + " is open");
 				parkingLot.setStatus(i, true);//spot empty
 			}
 			else if(ratio < 0.5)
 			{
+				if(oldStatus == true)
+				{
+					//TODO call logger function
+					predictionModel.addToHistory();
+				}
 				System.out.println("Spot: " + (i+1) + " is taken");
 				parkingLot.setStatus(i, false);//spot occupied
 			}
@@ -163,6 +178,7 @@ public class WebCommunications implements MouseListener
 //	    displayImage(image3);
 	}
 	
+	//TEMP
 	//copy to test individual spots (TEMP)
 	public void processImage(int i)
 	{

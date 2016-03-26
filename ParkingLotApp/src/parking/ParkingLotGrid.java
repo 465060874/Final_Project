@@ -140,6 +140,16 @@ public class ParkingLotGrid
 		
 	}
 	
+	/**
+	 * This is used to get the status of the spot, true is empty false is taken
+	 * @param spotNumber
+	 * @return status of spot
+	 */
+	public boolean getStatus(int spotNumber)
+	{
+		return myGrid[spotNumber].getStatus();
+	}
+	
 	//Return array of parking spots
 	/**
 	 * 
