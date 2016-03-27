@@ -1,5 +1,7 @@
 package parking;
 
+import java.awt.Point;
+
 import org.opencv.core.Range;
 import org.opencv.core.Scalar;
 
@@ -49,6 +51,20 @@ public class ParkingLotGrid
 			new Scalar(150,8,80), new Scalar(170,60,130), new Scalar(170,10,85), new Scalar(170,10,85), new Scalar(140,50,120), new Scalar(150,18,110), 
 			new Scalar(170,15,110), new Scalar(165,20,115), new Scalar(150,15,110), new Scalar(150,10,100), new Scalar(150,10,100), new Scalar(140,40,110), 
 			new Scalar(140,40,100), new Scalar(150,30,90), new Scalar(150,20,90), new Scalar(150,20,90)};
+
+	// Outlines the control area for adjusting to weather and light change conditions
+	private Point[] controlAreaStart = {
+			//Top Lot
+			new Point(197, 198), new Point(279, 203), new Point(385, 211), new Point(463, 220), 
+			//Bottom Lot
+			new Point(105, 333), new Point(190, 337), new Point(285, 339)
+	};
+	private Point[] controlAreaEnd = {
+			//Top Lot
+			new Point(243, 220), new Point(345, 219), new Point(470, 227), new Point(558, 232), 
+			//Bottom Lot
+			new Point(160, 371), new Point(251, 375), new Point(337, 382)
+	};
 
 	
 	/**
@@ -166,4 +182,16 @@ public class ParkingLotGrid
 	{
 
 	}
+	
+	//Returns the start point for the control area selected by int i
+	public Point getStartPoint(int i)
+	{
+		return this.controlAreaStart[i];
+	}
+	//Returns the end point for the control area selected by int i
+	public Point getEndPoint(int i)
+	{
+		return this.controlAreaEnd[i];
+	}
+	
 }//end ParkingLotGrid

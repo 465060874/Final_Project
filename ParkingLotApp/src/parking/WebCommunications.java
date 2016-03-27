@@ -45,8 +45,8 @@ public class WebCommunications implements MouseListener
 		
 		
 		
-//		processImage("ParkingOpen.JPG");
-		procImage();
+		processImage("ParkingOpen.JPG");
+//		procImage();
 
 	}
 
@@ -84,7 +84,14 @@ public class WebCommunications implements MouseListener
 
 		//Load image from file
 		Mat img = Highgui.imread("src/main/resources/" + filename);
+		Mat currentHsv = Mat.zeros(img.size(), 0);
+		Imgproc.cvtColor(img, currentHsv, Imgproc.COLOR_RGB2HSV);
 		
+		//Load and analyze control Image
+		Mat ctrlImg = Highgui.imread("src/main/resources/ParkingOpen.JPG");
+		Mat hsvCtrl = Mat.zeros(ctrlImg.size(), 0);
+		Imgproc.cvtColor(ctrlImg, hsvCtrl, Imgproc.COLOR_RGB2HSV);
+
 		////////////////////////
 		//Initialize Variables//
 		////////////////////////
@@ -103,6 +110,11 @@ public class WebCommunications implements MouseListener
 		//loop through array or parking lot and process each spot
 		for(int i = 0; i <= parkingLot.getSpotArray().length-1; i++)
 		{
+			Scalar ctrlAvg = new Scalar(0, 0, 0);
+			Scalar currentFrameAvg = new Scalar(0, 0, 0);
+			Scalar upper = new Scalar(0,0,0);
+			Scalar lower = new Scalar(0,0,0);
+			
 			//Set black and white count to zero from last run
 			black = 0;
 			white = 0;
@@ -122,8 +134,28 @@ public class WebCommunications implements MouseListener
 			//Convert color space to HSV
 			Imgproc.cvtColor(blur, hsv, Imgproc.COLOR_RGB2HSV);
 			
+			//Adjust for light condition changes
+			//////////////////////////////////////////////////////////////////////////////////////////////////////
+			//Check controls color and adjust ranges based on difference
+			ctrlAvg = getCtrlAvg(i, hsvCtrl);
+			
+			//Check current frame color
+			currentFrameAvg = getCtrlAvg(i, currentHsv);
+			
+			//Adjust value of the spot
+			for(int x = 0; x < 3; x++)
+			{
+				lower.val[x] = spotArray[i].getLowerHsv().val[x] - (ctrlAvg.val[x] - currentFrameAvg.val[x]);
+			}
+			//Adjust value of the spot
+			for(int x = 0; x < 3; x++)
+			{
+				upper.val[x] = spotArray[i].getUpperHsv().val[x] + (ctrlAvg.val[x] - currentFrameAvg.val[x]);
+			}
+			//////////////////////////////////////////////////////////////////////////////////////////////////////
+			
 			//Mask img with upper and lower limits
-			Core.inRange(hsv, spotArray[i].getLowerHsv(), spotArray[i].getUpperHsv(), mask);
+			Core.inRange(hsv, lower, upper, mask);
 
 			//Count the white pixels and black pixels
 			for(int x = 0; x <= mask.size().width - 1; x++)
@@ -178,6 +210,61 @@ public class WebCommunications implements MouseListener
 //	    displayImage(image3);
 	}
 	
+	public Scalar getCtrlAvg(int i, Mat hsvCtrl)
+	{
+		Scalar tempAvg = new Scalar(0, 0, 0);
+		Scalar ctrlAvg = new Scalar(0, 0, 0);
+
+		if(i <= 9)
+		{
+			for(int x = 0; x <= 3; x++)
+			{
+				tempAvg = getHsvAvg(parkingLot.getStartPoint(x), parkingLot.getEndPoint(x), hsvCtrl);
+				ctrlAvg.val[0] = (tempAvg.val[0] + ctrlAvg.val[0])/2;
+				ctrlAvg.val[1] = (tempAvg.val[1] + ctrlAvg.val[1])/2;
+				ctrlAvg.val[2] = (tempAvg.val[2] + ctrlAvg.val[2])/2;
+			}
+		}
+		else
+		{
+			for(int x = 4; x <= 6; x++)
+			{
+				tempAvg = getHsvAvg(parkingLot.getStartPoint(x), parkingLot.getEndPoint(x), hsvCtrl);
+				ctrlAvg.val[0] = (tempAvg.val[0] + ctrlAvg.val[0])/2;
+				ctrlAvg.val[1] = (tempAvg.val[1] + ctrlAvg.val[1])/2;
+				ctrlAvg.val[2] = (tempAvg.val[2] + ctrlAvg.val[2])/2;
+			}
+		}
+		return ctrlAvg;
+	}
+	
+	//For a given matrix of pixels and an area from start (x1, y1 pixel) to end (x2, y2 pixel) it tells the avg value of the pixels.
+	public Scalar getHsvAvg(Point start, Point end, Mat hsv)
+	{
+		int x = (int)(end.getX()-start.getX());
+		int y = (int)(end.getY()-start.getY());
+		int one = 0;
+		int two = 0;
+		int three = 0;
+		
+		for(int i = 0; i <= x; i++)
+		{
+			for(int j = 0; j <= y; j++)
+			{
+				one = (one + (int)hsv.get(i, j)[0])/2;
+				two = (two + (int)hsv.get(i, j)[1])/2;
+				three = (three + (int)hsv.get(i, j)[2])/2;
+			}
+			
+		}
+//		System.out.println("Average");
+//		System.out.println("HSV 1: " + one);
+//		System.out.println("HSV 2: " + two);
+//		System.out.println("HSV 3: " + three + "\n\n");
+		return new Scalar(one, two, three);
+		
+	}
+	
 	//TEMP
 	//copy to test individual spots (TEMP)
 	public void processImage(int i)
@@ -218,6 +305,7 @@ public class WebCommunications implements MouseListener
 		
 		//Convert color space to HSV
 		Imgproc.cvtColor(blur, hsv, Imgproc.COLOR_RGB2HSV);
+		
 		
 		//Mask img with upper and lower limits
 		Core.inRange(hsv, spotArray[i].getLowerHsv(), spotArray[i].getUpperHsv(), mask);
@@ -346,7 +434,7 @@ public class WebCommunications implements MouseListener
 //		    System.out.println(String.format("Writing %s", filename));
 //		    Highgui.imwrite(filename, crop);
 		
-		    Image image1 = Mat2BufferedImage(mask);
+		    Image image1 = Mat2BufferedImage(img);
 		    displayImage(image1);
 		    
 		    /////////
@@ -426,8 +514,8 @@ public class WebCommunications implements MouseListener
 	
 	public void mousePressed(MouseEvent e) 
 	{
-//		System.out.println("Entered ");
-//   System.out.println(e.getPoint());
+		System.out.println("Entered ");
+   System.out.println(e.getPoint());
 		
 //		start = e.getPoint();
 		
@@ -436,8 +524,8 @@ public class WebCommunications implements MouseListener
 	
 	public void mouseReleased(MouseEvent e) 
 	{
-//		System.out.println("Exited");
-//   System.out.println(e.getPoint());
+		System.out.println("Exited");
+   System.out.println(e.getPoint());
 //		end = e.getPoint();
 //		
 //		getHsvMax(start, end, hsv);
@@ -507,32 +595,7 @@ public class WebCommunications implements MouseListener
 		
 	}
 	
-	//For a given matrix of pixels and an area from start (x1, y1 pixel) to end (x2, y2 pixel) it tells the avg value of the pixels.
-	public void getHsvAvg(Point start, Point end, Mat hsv)
-	{
-		int x = (int)(end.getX()-start.getX());
-		int y = (int)(end.getY()-start.getY());
-		int one = 0;
-		int two = 0;
-		int three = 0;
-		
-		for(int i = 0; i <= x; i++)
-		{
-			for(int j = 0; j <= y; j++)
-			{
-				one = (one + (int)hsv.get(i, j)[0])/2;
-				two = (two + (int)hsv.get(i, j)[1])/2;
-				three = (three + (int)hsv.get(i, j)[2])/2;
-			}
-			
-		}
-		System.out.println("Average");
-		System.out.println("HSV 1: " + one);
-		System.out.println("HSV 2: " + two);
-		System.out.println("HSV 3: " + three + "\n\n");
-		
-		
-	}
+	
 	
 	
 	
