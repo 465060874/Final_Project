@@ -20,7 +20,23 @@ public class App extends Application
 	 * 
 	 * @param p a Stage object
 	 */
+	@Override
 	public void start(Stage p) {
+		/* TODO fix splash screen
+		try {	//load guiSplash.fxml
+			//p.initStyle(StageStyle.UNDECORATED);
+			p.centerOnScreen();
+			p.setOpacity(0.9);
+			p.setAlwaysOnTop(true);
+			Pane mainWindow = (Pane) FXMLLoader.load(getClass().getResource("guiSplash.fxml"));
+			Scene scene = new Scene(mainWindow);
+			p.setScene(scene);
+			p.setResizable(false);
+			p.show();
+		} catch (Exception e) {
+			System.out.println("Ouch, I've encountered a fatal error! :(\nError loading guiSplash.fxml. Check it out and help me feel better!");
+		}*/
+		
 		try {	//load GUI.fxml to new pane, create new scene, put it in primaryStage, all that fun stuff
 			Pane mainWindow = (Pane) FXMLLoader.load(getClass().getResource("guiMain.fxml"));
 			Scene scene = new Scene(mainWindow);
@@ -29,8 +45,18 @@ public class App extends Application
 			primaryStage.setResizable(false);
 			primaryStage.show();
 		} catch (Exception e) {	//catch exceptions while loading GUI.fxml
-			System.out.println("Ouch, I've encountered a fatal error! :(\nError loading guiMain.fxml. Check your files and help me feel better!");
+			System.out.println("Ouch, I've encountered a fatal error! :(\nError loading guiMain.fxml. Check it out and help me feel better!");
 		}
+
+		// let splash screen hang out for awhile
+		try {
+			Thread.sleep(1000);
+		} catch (Exception e) {
+			System.out.println("Quit it, can't you see I'm trying to sleep here!?");
+		}
+		
+		// close the splash screen
+		p.close();
 	}
 	
 	/**
@@ -47,8 +73,7 @@ public class App extends Application
 	 */
 	public static void main(String[] args)
 	{
-		launch(args);	
-		//WebCommunications web = new WebCommunications();
+		launch(args);
 	}
 	
 }//end App
