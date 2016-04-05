@@ -547,10 +547,24 @@
             <Rectangle arcWidth="5.0" fill="#000000e8" height="43.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="27.0" GridPane.columnIndex="10" />
          </children>
       </GridPane>
-      <Text layoutX="412.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last updated:" />
-      <Text layoutX="412.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current available spots:" />
-      <Text fx:id="gridLastUpdateText" layoutX="422.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HH:mm:ss zzz yyyy.MM.dd" />
-      <Text fx:id="currentSpotsAvailableText" layoutX="542.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="88" />
+      <Text layoutX="412.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" text="There are currently">
+         <font>
+            <Font size="18.0" />
+         </font></Text>
+      <TextFlow layoutX="432.0" layoutY="369.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="63.0" prefWidth="110.0" textAlignment="CENTER">
+         <children>
+            <Text fx:id="currentSpotsAvailableText" boundsType="VISUAL" fill="RED" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="NaN" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Text>
+         </children>
+      </TextFlow>
       <Separator layoutY="309.0" prefHeight="17.0" prefWidth="625.0" />
+      <Text layoutX="429.0" layoutY="442.0" strokeType="OUTSIDE" strokeWidth="0.0" text="spots available">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
    </children>
 </Pane>

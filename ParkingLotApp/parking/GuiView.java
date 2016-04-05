@@ -83,13 +83,13 @@ public class GuiView implements Initializable {
     @FXML private ImageView carIcon26;
     @FXML private ImageView carIcon27;
     @FXML private ImageView carIcon28;
-    @FXML private Text gridLastUpdateText;
     @FXML private Text currentSpotsAvailableText;
     @FXML private Pane paneSpotLabelOverlay;
 
     // Class Variables
     private Image image;		//the image object to be displayed in the webcam view
-    private Timer timer;		//Timer object used to update webcam view
+    private Timer camTimer;		//Timer object used to update webcam view
+    private Timer processTimer;	//Time object used for image processing and grid view display
     private File imageFile;		//File object used to pull webcam image
     
     // Date and Time
@@ -106,6 +106,14 @@ public class GuiView implements Initializable {
 		Highgui.imencode(".bmp", mat, byteMat);
 		image = new Image(new ByteArrayInputStream(byteMat.toArray()));
 	}*/
+	
+	/*
+	 * TODO impplement this, fool!
+	 * Uses results of image processing to update icons in grid view
+	 */
+	public void updateGrid() {
+		
+	}
 	
 	/**
 	 * Non-Function: Sprint 1
@@ -125,7 +133,8 @@ public class GuiView implements Initializable {
 		App.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent t) {
-				timer.cancel();
+				camTimer.cancel();
+				processTimer.cancel();
 				try {
 					WebCommunications.grabber.stop();
 				} catch (Exception ed) {
@@ -137,7 +146,8 @@ public class GuiView implements Initializable {
 
 		// Event handlers for menu items
 		menuClose.setOnAction(e -> {	//<File-Close>
-			timer.cancel();
+			camTimer.cancel();
+			processTimer.cancel();
 			try {
 				WebCommunications.grabber.stop();
 			} catch (Exception ed) {
@@ -187,8 +197,8 @@ public class GuiView implements Initializable {
 		}
 		
 		// timer task to update webcam feed TODO make this cleaner; property binding?
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
+		camTimer = new Timer();
+		camTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				//System.out.println("I'm alive!");										//test code to verify update interval TODO remove
@@ -197,16 +207,24 @@ public class GuiView implements Initializable {
 				} catch (Exception e) {
 					System.out.println("Boo save :(");
 				}
-				imageFile = WebCommunications.imageForGUIMadness;		//pull image file from system TODO change path
-				image = new Image(imageFile.toURI().toString());				//create Image from File
-				webcamView.setImage(image);										//display Image in GUI
+				imageFile = WebCommunications.imageForGUIMadness;			//pull image file from system TODO change path
+				image = new Image(imageFile.toURI().toString());			//create Image from File
+				webcamView.setImage(image);									//display Image in GUI
 				imageLastUpdateText.setText(time.format(Calendar.getInstance().getTime()) 	//update update time
 						+ " " + date.format(Calendar.getInstance().getTime()));
 			}
-		}, 0, 30);	// change webcam view update interval here!
+		}, 500, 30);	// change webcam view update interval here!
 		
-		/* This is Ian's happy place.
+		// This is Ian's happy place.
+		// Timer task to control image processing and grid view display
 		WebCommunications web = new WebCommunications();
-		web.processImage("ParkingOpen.JPG");*/
+		processTimer = new Timer();
+		camTimer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				System.out.println("Ding, fries are done.");
+				web.processImage("getImageResult.jpg");	//Here goes nothing, Captain!
+			}
+		}, 0, 2000);
 	}
 } //end GuiView
