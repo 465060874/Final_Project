@@ -3,9 +3,6 @@ package parking;
 import javafx.scene.image.Image;
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ResourceBundle;
@@ -29,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.WindowEvent;
 
@@ -92,20 +90,12 @@ public class GuiView implements Initializable {
     private Thread thread;		//Thread to run image processing task in
     private File imageFile;		//File object used to pull webcam image
     private WebCommunications web = new WebCommunications();	//WebCommunications object used for magic
-    private int numEmpty = 0;	//Number of empty spots
+    private int numEmpty = -1;	//Number of empty spots
     
     // Date and Time
 	SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd");
 	SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss z");
     
-	/*
-	 * TODO impplement this, fool!
-	 * Uses results of image processing to update icons in grid view
-	 */
-	public void updateGrid() {
-		parkingGridPane.getChildren().clear();
-	}
-	
 	/**
 	 * Non-Function: Sprint 1
 	 */
@@ -210,6 +200,7 @@ public class GuiView implements Initializable {
 	public void updateCamView() {
 		//Initial image pull, also opens connection to webcam
 		try {
+			
 			WebCommunications.getImage();
 		} catch (Exception e) {
 			System.out.println("Boo get :(");
@@ -245,13 +236,14 @@ public class GuiView implements Initializable {
 				//First time in the thread, wait for image to be grabbed
 				boolean done = false;
 				if (!done) {
-					Thread.sleep(7000);
+					Thread.sleep(4000);
 				}
 				done = true;
 				
 				while (true) {	//loop forever
 					Thread.sleep(UPDATE_INTERVAL);
 					System.out.println("Ding, fries are done.");
+					
 					//web.processImage("getImageResult.jpg");
 					
 					updateMessage(Double.toString(Math.random()));	//triggers listener to update GUI
@@ -268,10 +260,33 @@ public class GuiView implements Initializable {
 		update.messageProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				//TODO GUI updates go here
-				System.out.println("GUI!");
+				updateGrid();
+				updateNumEmpty();
 			}
 		});
+	}
+	
+	/*
+	 * TODO implement this, fool!
+	 * Uses results of image processing to update icons in grid view
+	 */
+	public void updateGrid() {
+		System.out.println("The wheels on the bus go round and round"); //TEST
+		
+		//TODO change icon visibility based on spot status
+	}
+	
+	public void updateNumEmpty() {
+		System.out.println("Two wrongs don't make a right, but two rights make a U-turn!"); //TEST
+		
+		//TODO assign number of empty spots to numEmpty
+		
+		if (numEmpty < 0) currentSpotsAvailableText.setText("NaN");
+		else currentSpotsAvailableText.setText(Integer.toString(numEmpty));
+		
+		if (numEmpty <= 5) currentSpotsAvailableText.setFill(Color.RED);
+		else if (numEmpty <= 10) currentSpotsAvailableText.setFill(Color.GOLD);
+		else currentSpotsAvailableText.setFill(Color.LIME);
 	}
 	
 	/**

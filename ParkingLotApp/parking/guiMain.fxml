@@ -558,7 +558,7 @@
          </font></Text>
       <TextFlow layoutX="432.0" layoutY="369.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="63.0" prefWidth="110.0" textAlignment="CENTER">
          <children>
-            <Text fx:id="currentSpotsAvailableText" boundsType="VISUAL" fill="RED" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="NaN" textAlignment="CENTER">
+            <Text fx:id="currentSpotsAvailableText" boundsType="VISUAL" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="NaN" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
