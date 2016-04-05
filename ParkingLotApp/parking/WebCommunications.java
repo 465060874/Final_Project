@@ -1,18 +1,18 @@
 package parking;
-import java.awt.FlowLayout;
-import java.awt.Image;
+//import java.awt.FlowLayout;
+//import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+//import java.awt.event.MouseEvent;
+//import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
+//import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+//import javax.swing.ImageIcon;
+//import javax.swing.JFrame;
+//import javax.swing.JLabel;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
@@ -20,8 +20,8 @@ import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Range;
-import org.opencv.core.Scalar;
+//import org.opencv.core.Range;
+//import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
@@ -37,8 +37,8 @@ public class WebCommunications
 	public static FrameGrabber grabber;
 	private static Frame frame;
 
-	private ParkingLotGrid parkingLot;
-	private String error;
+	private ParkingLotGrid parkingLot = new ParkingLotGrid(); // added initialization due to NullPointer
+	//private String error;
 	Mat img ;
 	Mat crop;
 	Mat blur = null;
@@ -46,7 +46,7 @@ public class WebCommunications
     Mat mask = null;
     Point start;
     Point end;
-	//public static Mat image;	// added to allow GuiView access to image TODO clean this up
+    
     public static File imageForGUIMadness = new File("src/main/resources/getImageResult.jpg");
 	
 	/**
@@ -111,7 +111,6 @@ public class WebCommunications
 			frame = grabber.grab();
 		} catch (Exception e) {
 	    	System.out.println("No grabby grab.");
-			imageForGUIMadness = new File("src/main/resources/blankImage.jpg"); //if can't pull image, show image not found
 	    }
 		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
 		BufferedImage image = javaconverter.convert(frame);

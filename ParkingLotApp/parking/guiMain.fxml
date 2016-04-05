@@ -36,12 +36,17 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="600.0">
                      <children>
+                        <ImageView fitHeight="500.0" fitWidth="400.0" layoutX="201.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../src/main/resources/blankImage.jpg" />
+                           </image>
+                        </ImageView>
                         <ImageView fx:id="webcamView" fitHeight="250.5" fitWidth="400.5" layoutX="201.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image backgroundLoading="true" url="@../src/main/resources/getImageResult.jpg" />
                            </image>
                         </ImageView>
-                        <Text fx:id="imageLastUpdateText" layoutX="33.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HH:mm:ss zzz yyyy.MM.dd" />
+                        <Text fx:id="imageLastUpdateText" layoutX="33.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Initializing, please wait ..." />
                         <DatePicker fx:id="predictionDateSelector" layoutX="33.0" layoutY="109.0" prefHeight="25.0" prefWidth="123.0" promptText="select date" />
                         <ComboBox fx:id="predictionTimeSelector" editable="true" layoutX="33.0" layoutY="144.0" prefHeight="25.0" prefWidth="123.0" promptText="select time" />
                         <Button fx:id="predictionButton" layoutX="33.0" layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Predict" />

@@ -1,22 +1,21 @@
 package parking;
 
 import javafx.scene.image.Image;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.highgui.Highgui;
-
 import javafx.fxml.Initializable;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -89,30 +88,22 @@ public class GuiView implements Initializable {
     // Class Variables
     private Image image;		//the image object to be displayed in the webcam view
     private Timer camTimer;		//Timer object used to update webcam view
-    private Timer processTimer;	//Time object used for image processing and grid view display
+    private Task<Void> update;	//Task used for image processing and grid view display
+    private Thread thread;		//Thread to run image processing task in
     private File imageFile;		//File object used to pull webcam image
+    private WebCommunications web = new WebCommunications();	//WebCommunications object used for magic
+    private int numEmpty = 0;	//Number of empty spots
     
     // Date and Time
 	SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd");
 	SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss z");
     
-	/**
-	 * Takes the public Mat object image from WebCommunications and converts it to a JavaFX Image object
-	 */
-	/*public void convertImage() {
-		Mat mat = WebCommunications.image;
-		
-		MatOfByte byteMat = new MatOfByte();
-		Highgui.imencode(".bmp", mat, byteMat);
-		image = new Image(new ByteArrayInputStream(byteMat.toArray()));
-	}*/
-	
 	/*
 	 * TODO impplement this, fool!
 	 * Uses results of image processing to update icons in grid view
 	 */
 	public void updateGrid() {
-		
+		parkingGridPane.getChildren().clear();
 	}
 	
 	/**
@@ -122,44 +113,69 @@ public class GuiView implements Initializable {
 
 	}
 	
-	/**
-	 * Event handlers, listeners, and other GUI-related actions
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 */
-	public void initialize(URL arg0, ResourceBundle arg1){
-		// Event handler to close application using Red X
+	// Event handler to close application using Red X TODO javadoc
+	public void closeRedX() {
 		App.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void handle(WindowEvent t) {
+				//stop the camView thread
 				camTimer.cancel();
-				processTimer.cancel();
+				
+				//stop the processing thread
+				thread.stop();
+				
+				//stop the frame grabber
 				try {
 					WebCommunications.grabber.stop();
 				} catch (Exception ed) {
 					System.out.println("Tim is a terrible developer.");
 				}
+				
+				//delete image file
+				boolean done = false;
+				while (!done) {
+					done = WebCommunications.imageForGUIMadness.delete();
+					System.out.println(done);
+				}
+				
+				//terminate program
 				Platform.exit();
 			}
 		});
-
-		// Event handlers for menu items
+	}
+	
+	// Close application using File menu TODO javadoc
+	@SuppressWarnings("deprecation")
+	public void closeFromMenu() {
 		menuClose.setOnAction(e -> {	//<File-Close>
+			//stop the camView thread
 			camTimer.cancel();
-			processTimer.cancel();
+			
+			//stop the processing thread
+			thread.stop();
+			
+			//stop the frame grabber
 			try {
 				WebCommunications.grabber.stop();
 			} catch (Exception ed) {
 				System.out.println("Tim is a terrible developer.");
 			}
+			
+			//delete image file
+			boolean done = false;
+			while (!done) {
+				done = WebCommunications.imageForGUIMadness.delete();
+				System.out.println(done);
+			}
+			
+			//terminate program
 			Platform.exit();
 		});
-		
-		// Property binding for spot label overlay checkbox
-		paneSpotLabelOverlay.visibleProperty().bind(checkBoxLabelOverlay.selectedProperty());
-		
-		// Clear the grid on startup
+	}
+	
+	// Event handlers for menu items TODO javadoc
+	public void clearGrid() {
 		carIcon1.setVisible(false);
 		carIcon2.setVisible(false);
 		carIcon3.setVisible(false);
@@ -188,7 +204,10 @@ public class GuiView implements Initializable {
 		carIcon26.setVisible(false);
 		carIcon27.setVisible(false);
 		carIcon28.setVisible(false);
-		
+	}
+	
+	// TODO javadoc
+	public void updateCamView() {
 		//Initial image pull, also opens connection to webcam
 		try {
 			WebCommunications.getImage();
@@ -201,8 +220,8 @@ public class GuiView implements Initializable {
 		camTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				//System.out.println("I'm alive!");										//test code to verify update interval TODO remove
-				try {															//TEST pull image
+				//System.out.println("I'm alive!");
+				try {	//pull image
 					WebCommunications.saveImage();
 				} catch (Exception e) {
 					System.out.println("Boo save :(");
@@ -213,18 +232,61 @@ public class GuiView implements Initializable {
 				imageLastUpdateText.setText(time.format(Calendar.getInstance().getTime()) 	//update update time
 						+ " " + date.format(Calendar.getInstance().getTime()));
 			}
-		}, 500, 30);	// change webcam view update interval here!
-		
-		// This is Ian's happy place.
-		// Timer task to control image processing and grid view display
-		WebCommunications web = new WebCommunications();
-		processTimer = new Timer();
-		camTimer.scheduleAtFixedRate(new TimerTask() {
+		}, 3000, 30);	// change webcam view update interval here!
+	}
+	
+	// This is Ian's happy place. TODO javadoc
+	// Thread to control image processing and grid view display
+	public void updateGridView() {
+		final long UPDATE_INTERVAL = 1000;		//TODO change processing interval here
+		update = new Task<Void>() {
 			@Override
-			public void run() {
-				System.out.println("Ding, fries are done.");
-				web.processImage("getImageResult.jpg");	//Here goes nothing, Captain!
+			public Void call() throws InterruptedException {
+				//First time in the thread, wait for image to be grabbed
+				boolean done = false;
+				if (!done) {
+					Thread.sleep(7000);
+				}
+				done = true;
+				
+				while (true) {	//loop forever
+					Thread.sleep(UPDATE_INTERVAL);
+					System.out.println("Ding, fries are done.");
+					//web.processImage("getImageResult.jpg");
+					
+					updateMessage(Double.toString(Math.random()));	//triggers listener to update GUI
+				}
 			}
-		}, 0, 2000);
+		};
+		
+		// Execute simulation thread
+		thread = new Thread(update);
+		thread.setDaemon(true);
+		thread.start();
+		
+		// Listener to update GUI after each iteration
+		update.messageProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				//TODO GUI updates go here
+				System.out.println("GUI!");
+			}
+		});
+	}
+	
+	/**
+	 * Event handlers, listeners, and other GUI-related actions
+	 */
+	public void initialize(URL arg0, ResourceBundle arg1){
+
+		closeRedX();
+		closeFromMenu();
+		clearGrid();
+		
+		// Property binding for spot label overlay checkbox
+		paneSpotLabelOverlay.visibleProperty().bind(checkBoxLabelOverlay.selectedProperty());
+		
+		updateCamView();
+		updateGridView();
 	}
 } //end GuiView

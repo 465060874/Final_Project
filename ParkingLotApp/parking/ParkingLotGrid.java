@@ -10,12 +10,11 @@ import org.opencv.core.Scalar;
  */
 public class ParkingLotGrid 
 {
-
-	private boolean isFull;
-	private ParkingSpots[] myGrid;
-	private String timeSinceUpdated;
-	public ParkingSpots m_ParkingSpots;
 	private int totalSpots = 28; //Starting count with 1 not zero.
+	private boolean isFull;
+	private ParkingSpots[] myGrid = new ParkingSpots[28]; //added initialization due to Null Pointer
+	private String timeSinceUpdated;
+	public ParkingSpots m_ParkingSpots;	
 
 	//Hard Coded array of Ranges for all the spots, if we make it were this is done through the GUI this isnt needed anymore
 	private Range[] xRange = {  new Range(195, 218), new Range(224, 258),new Range(262, 301),new Range(299, 341),new Range(387, 412),new Range(425, 455),
@@ -57,7 +56,10 @@ public class ParkingLotGrid
 	 */
 	public ParkingLotGrid()
 	{
-		
+		//initialize myGrid
+		for (int i = 0; i < myGrid.length; i ++) {
+			myGrid[i] = new ParkingSpots();
+		}
 	}
 	/**
 	 * Sprint 1: No implementation
