@@ -46,7 +46,8 @@ public class WebCommunications
     Mat mask = null;
     Point start;
     Point end;
-	public static Mat image;	// added to allow GuiView access to image TODO clean this up
+	//public static Mat image;	// added to allow GuiView access to image TODO clean this up
+    public static File imageForGUIMadness = new File("src/main/resources/getImageResult.jpg");
 	
 	/**
 	 * Blank constructor for WebCommunication.java
@@ -110,11 +111,12 @@ public class WebCommunications
 			frame = grabber.grab();
 		} catch (Exception e) {
 	    	System.out.println("No grabby grab.");
+			imageForGUIMadness = new File("src/main/resources/blankImage.jpg"); //if can't pull image, show image not found
 	    }
 		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
 		BufferedImage image = javaconverter.convert(frame);
 		try {
-			ImageIO.write(image, "jpg", new File("src/main/resources/getImageResult.jpg"));
+			ImageIO.write(image, "jpg", imageForGUIMadness /*new File("src/main/resources/getImageResult.jpg")*/);
 		} catch (IOException e) {
 			System.out.println("Failed.");
 		}

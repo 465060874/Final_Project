@@ -99,13 +99,13 @@ public class GuiView implements Initializable {
 	/**
 	 * Takes the public Mat object image from WebCommunications and converts it to a JavaFX Image object
 	 */
-	public void convertImage() {
+	/*public void convertImage() {
 		Mat mat = WebCommunications.image;
 		
 		MatOfByte byteMat = new MatOfByte();
 		Highgui.imencode(".bmp", mat, byteMat);
 		image = new Image(new ByteArrayInputStream(byteMat.toArray()));
-	}
+	}*/
 	
 	/**
 	 * Non-Function: Sprint 1
@@ -191,13 +191,13 @@ public class GuiView implements Initializable {
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				//System.out.println("test");										//test code to verify update interval TODO remove
+				//System.out.println("I'm alive!");										//test code to verify update interval TODO remove
 				try {															//TEST pull image
 					WebCommunications.saveImage();
 				} catch (Exception e) {
 					System.out.println("Boo save :(");
 				}
-				imageFile = new File("src/main/resources/getImageResult.JPG");		//pull image file from system TODO change path
+				imageFile = WebCommunications.imageForGUIMadness;		//pull image file from system TODO change path
 				image = new Image(imageFile.toURI().toString());				//create Image from File
 				webcamView.setImage(image);										//display Image in GUI
 				imageLastUpdateText.setText(time.format(Calendar.getInstance().getTime()) 	//update update time
