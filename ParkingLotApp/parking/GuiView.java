@@ -115,6 +115,9 @@ public class GuiView implements Initializable {
 				//stop the processing thread
 				thread.stop();
 				
+				//stop swinging
+				App.frame.dispose();
+				
 				//stop the frame grabber
 				try {
 					WebCommunications.grabber.stop();
@@ -144,6 +147,9 @@ public class GuiView implements Initializable {
 			
 			//stop the processing thread
 			thread.stop();
+			
+			//stop swinging
+			App.frame.dispose();
 			
 			//stop the frame grabber
 			try {

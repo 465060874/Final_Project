@@ -1,5 +1,10 @@
 package parking;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +19,7 @@ import javafx.scene.layout.Pane;
 public class App extends Application 
 {
 	public static Stage primaryStage = new Stage();
+	public static JFrame frame = new JFrame();
 	
 	/**
 	 * Load GUI structure from FXML and show GUI
@@ -22,27 +28,27 @@ public class App extends Application
 	 */
 	@Override
 	public void start(Stage p) {
-		/* TODO fix splash screen
-		try {	//load guiSplash.fxml
-			//p.initStyle(StageStyle.UNDECORATED);
-			p.centerOnScreen();
-			p.setOpacity(0.9);
-			p.setAlwaysOnTop(true);
-			Pane mainWindow = (Pane) FXMLLoader.load(getClass().getResource("guiSplash.fxml"));
-			Scene scene = new Scene(mainWindow);
-			p.setScene(scene);
-			p.setResizable(false);
-			p.show();
-		} catch (Exception e) {
-			System.out.println("Ouch, I've encountered a fatal error! :(\nError loading guiSplash.fxml. Check it out and help me feel better!");
-		}*/
 		
+		// Load and display splash screen (Swing)
+		String fileName = "src/main/resources/splash.png";
+        ImageIcon icon = new ImageIcon(fileName);
+        JLabel label = new JLabel(icon, SwingConstants.CENTER);
+		//JFrame frame = new JFrame("TitleLessJFrame");
+	    frame.getContentPane().add(label);
+	    frame.setUndecorated(true);
+	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    frame.pack();
+	    frame.setLocationRelativeTo(null);
+	    frame.setAlwaysOnTop(true);
+	    frame.setVisible(true);
+	    
 		try {	//load GUI.fxml to new pane, create new scene, put it in primaryStage, all that fun stuff
 			Pane mainWindow = (Pane) FXMLLoader.load(getClass().getResource("guiMain.fxml"));
 			Scene scene = new Scene(mainWindow);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Parking Pal 1.0");
 			primaryStage.setResizable(false);
+			primaryStage.centerOnScreen();
 			primaryStage.show();
 		} catch (Exception e) {	//catch exceptions while loading GUI.fxml
 			System.out.println("Ouch, I've encountered a fatal error! :(\nError loading guiMain.fxml. Check it out and help me feel better!");
@@ -50,13 +56,13 @@ public class App extends Application
 
 		// let splash screen hang out for awhile
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (Exception e) {
 			System.out.println("Quit it, can't you see I'm trying to sleep here!?");
 		}
 		
 		// close the splash screen
-		p.close();
+		frame.setVisible(false);
 	}
 	
 	/**
