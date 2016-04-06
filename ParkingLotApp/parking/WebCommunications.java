@@ -170,7 +170,7 @@ public class WebCommunications
 			
 			//Create a Blur, hsv, and mask matrix same size and type as crop for bilateral filter return, hsv return and mask return
 			Size size = new Size(crop.width(), crop.height());
-			blur = Mat.zeros(size , 0);
+			blur = Mat.zeros(size , 0);	//might need to change zero
 			hsv = Mat.zeros(size , 0);
 			mask = Mat.zeros(size , 0);
 

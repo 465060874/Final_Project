@@ -16,8 +16,7 @@ import javafx.scene.layout.Pane;
  * @version 1.0
  * @created 19-Feb-2016 5:52:26 PM
  */
-public class App extends Application 
-{
+public class App extends Application {
 	public static Stage primaryStage = new Stage();
 	public static JFrame frame = new JFrame();
 	
@@ -32,16 +31,17 @@ public class App extends Application
 		// Load and display splash screen (Swing)
 		String fileName = "src/main/resources/splash.png";
         ImageIcon icon = new ImageIcon(fileName);
-        JLabel label = new JLabel(icon, SwingConstants.CENTER);
+        JLabel label = new JLabel(icon, SwingConstants.CENTER);	//center picture in frame
 	    frame.getContentPane().add(label);
 	    frame.setUndecorated(true);
 	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	    frame.pack();
-	    frame.setLocationRelativeTo(null);
+	    frame.pack();	//conform frame size to image size
+	    frame.setLocationRelativeTo(null);	//center on screen
 	    frame.setAlwaysOnTop(true);
 	    frame.setVisible(true);
 	    
-		try {	//load GUI.fxml to new pane, create new scene, put it in primaryStage, all that fun stuff
+	    // Load and display main interface
+		try {
 			Pane mainWindow = (Pane) FXMLLoader.load(getClass().getResource("guiMain.fxml"));
 			Scene scene = new Scene(mainWindow);
 			primaryStage.setScene(scene);
@@ -53,31 +53,22 @@ public class App extends Application
 			System.out.println("Ouch, I've encountered a fatal error! :(\nError loading guiMain.fxml. Check it out and help me feel better!");
 		}
 
-		// let splash screen hang out for awhile
+		// Let splash screen hang out for awhile
 		try {
 			Thread.sleep(2000);
 		} catch (Exception e) {
 			System.out.println("Quit it, can't you see I'm trying to sleep here!?");
 		}
 		
-		// close the splash screen
+		// Close the splash screen
 		frame.setVisible(false);
-	}
-	
-	/**
-	 * 
-	 * Sprint 1: No implementation
-	 */
-	public void finalize() throws Throwable {
-
 	}
 	
 	/**
 	 * Main method, initializes program
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		launch(args);
 	}
 	

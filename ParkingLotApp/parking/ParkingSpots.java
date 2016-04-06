@@ -20,7 +20,7 @@ public class ParkingSpots
 
 	public ParkingSpots()
 	{
-		
+		isEmpty = false;	//TODO did this work?
 	}
 	/**
 	 * Sprint 1: No implementation

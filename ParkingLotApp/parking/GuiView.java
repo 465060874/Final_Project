@@ -38,6 +38,7 @@ import javafx.stage.WindowEvent;
 
 public class GuiView implements Initializable {
 
+	// GUI objects loaded from guiMain.fxml
 	@FXML private MenuItem menuClose;
 	@FXML private MenuItem menuAbout;
 	@FXML private MenuItem menuSaveFrame;
@@ -84,39 +85,35 @@ public class GuiView implements Initializable {
     @FXML private Pane paneSpotLabelOverlay;
 
     // Class Variables
-    private Image image;		//the image object to be displayed in the webcam view
-    private Timer camTimer;		//Timer object used to update webcam view
-    private Task<Void> update;	//Task used for image processing and grid view display
-    private Thread thread;		//Thread to run image processing task in
-    private File imageFile;		//File object used to pull webcam image
+    private Image image;										//the image object to be displayed in the webcam view
+    private Timer camTimer;										//Timer object used to update webcam view
+    private Task<Void> processingTask;							//Task used for image processing and grid view display
+    private Thread processingThread;							//Thread to run image processing task in
+    private File imageFile;										//File object used to pull webcam image
     private WebCommunications web = new WebCommunications();	//WebCommunications object used for magic
-    private int numEmpty = -1;	//Number of empty spots
+    private int numEmpty = -1;									//Number of empty spots
+    
+    // UPDATE VALUES
+    private final long CAM_DELAY 		= 3000;		//how long to wait to start pulling images
+    private final long CAM_UPDATE_RATE 	= 30;		//how often to pull new image
+    private final long PROCESS_DELAY 	= 4000;		//how long to wait to start processing images
+    private final long PROCESS_RATE 	= 3000;		//how often to process image
     
     // Date and Time
 	SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd");
 	SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss z");
     
 	/**
-	 * Non-Function: Sprint 1
+	 * Called to terminate program when red X clicked in the main interface
 	 */
-	public void finalize() throws Throwable {
-
-	}
-	
-	// Event handler to close application using Red X TODO javadoc
 	public void closeRedX() {
 		App.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void handle(WindowEvent t) {
-				//stop the camView thread
-				camTimer.cancel();
-				
-				//stop the processing thread
-				thread.stop();
-				
-				//stop swinging
-				App.frame.dispose();
+				camTimer.cancel();			//stop the camView thread
+				processingThread.stop();	//stop the processing thread
+				App.frame.dispose();		//stop swinging
 				
 				//stop the frame grabber
 				try {
@@ -127,32 +124,28 @@ public class GuiView implements Initializable {
 				
 				//delete image file
 				boolean done = false;
-				for (int i = 0; i < 100; i ++) {
+				for (int i = 0; i < 100; i ++) {	//this may take several tries
 					done = WebCommunications.imageForGUIMadness.delete();
 					if (done) {
-						break;
+						break;	//stop trying after it works
 					}
 				}
-				System.out.println(done);
+				System.out.println(done);	//TODO test line
 				
-				//terminate program
-				Platform.exit();
+				Platform.exit();	//terminate program
 			}
 		});
 	}
 	
-	// Close application using File menu TODO javadoc
+	/**
+	 * Called to terminate program when File->Close selected
+	 */
 	@SuppressWarnings("deprecation")
 	public void closeFromMenu() {
-		menuClose.setOnAction(e -> {	//<File-Close>
-			//stop the camView thread
-			camTimer.cancel();
-			
-			//stop the processing thread
-			thread.stop();
-			
-			//stop swinging
-			App.frame.dispose();
+		menuClose.setOnAction(e -> {
+			camTimer.cancel();			//stop the camView thread
+			processingThread.stop();	//stop the processing thread
+			App.frame.dispose();		//stop swinging
 			
 			//stop the frame grabber
 			try {
@@ -163,20 +156,21 @@ public class GuiView implements Initializable {
 			
 			//delete image file
 			boolean done = false;
-			for (int i = 0; i < 100; i ++) {
+			for (int i = 0; i < 100; i ++) {	//this may take several tries
 				done = WebCommunications.imageForGUIMadness.delete();
 				if (done) {
-					break;
+					break;	//when it works, stop trying
 				}
 			}
-			System.out.println(done);
+			System.out.println(done);	//TODO test line
 			
-			//terminate program
-			Platform.exit();
+			Platform.exit();	//terminate program
 		});
 	}
 	
-	// Event handlers for menu items TODO javadoc
+	/**
+	 * Hides all car icons in the Grid View
+	 */
 	public void clearGrid() {
 		carIcon1.setVisible(false);
 		carIcon2.setVisible(false);
@@ -208,22 +202,24 @@ public class GuiView implements Initializable {
 		carIcon28.setVisible(false);
 	}
 	
-	// TODO javadoc
+	/**
+	 * Contains the Timer and associated task for updating the live camera feed
+	 */
 	public void updateCamView() {
-		//Initial image pull, also opens connection to webcam
+		//initial image pull, opens connection to camera feed
 		try {
 			WebCommunications.getImage();
 		} catch (Exception e) {
-			System.out.println("Boo get :(");
+			System.out.println("Boo get :(");	//TODO test line
 			imageLastUpdateText.setText("ERROR: check network");
 		}
 		
-		// timer task to update webcam feed
+		//timer task to update live feed
 		camTimer = new Timer();
 		camTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				//System.out.println(WebCommunications.grabFail);
+				//System.out.println(WebCommunications.grabFail);		//test line
 				try {	//pull image
 					if (WebCommunications.grabFail) {
 						WebCommunications.getImage();
@@ -232,12 +228,12 @@ public class GuiView implements Initializable {
 						WebCommunications.saveImage();
 					}
 				} catch (Exception e) {
-					System.out.println("Boo save :(");
+					System.out.println("Boo save :(");	//TODO test line
 				}
-				imageFile = WebCommunications.imageForGUIMadness;			//pull image file from system TODO change path
+				imageFile = WebCommunications.imageForGUIMadness;			//pull image file from system
 				image = new Image(imageFile.toURI().toString());			//create Image from File
 				webcamView.setImage(image);									//display Image in GUI
-				if (WebCommunications.grabFail) {
+				if (WebCommunications.grabFail) {		//if can't get a new image, let user know 
 					imageLastUpdateText.setText("ERROR: check network");
 					webcamView.setVisible(false);
 				}
@@ -248,29 +244,29 @@ public class GuiView implements Initializable {
 				}
 				
 			}
-		}, 3000, 30);	// change webcam view update interval here!
+		}, CAM_DELAY, CAM_UPDATE_RATE);
 	}
 	
-	// This is Ian's happy place. TODO javadoc
-	// Thread to control image processing and grid view display
+	/**
+	 * Contains thread for image processing and updating the grid view
+	 */
 	public void updateGridView() {
-		final long UPDATE_INTERVAL = 1000;		//TODO change processing interval here
-		update = new Task<Void>() {
+		processingTask = new Task<Void>() {
 			@Override
 			public Void call() throws InterruptedException {
-				//First time in the thread, wait for image to be grabbed
+				//first time in the thread, wait for image to be grabbed
 				boolean done = false;
 				if (!done) {
-					Thread.sleep(4000);
+					Thread.sleep(PROCESS_DELAY);
 				}
 				done = true;
 				
 				while (true) {	//loop forever
-					Thread.sleep(UPDATE_INTERVAL);
+					Thread.sleep(PROCESS_RATE);
 					
 					if (imageFile.exists()) {
-						System.out.println("Ding, fries are done.");
-						//web.processImage("getImageResult.jpg");	TODO get this working
+						System.out.println("Ding, fries are done (calling web.processImage())");	//TODO test line
+						//web.processImage("getImageResult.jpg");	//TODO get this working
 					}
 					
 					updateMessage(Double.toString(Math.random()));	//triggers listener to update GUI
@@ -278,35 +274,99 @@ public class GuiView implements Initializable {
 			}
 		};
 		
-		// Execute simulation thread
-		thread = new Thread(update);
-		thread.setDaemon(true);
-		thread.start();
+		//execute thread
+		processingThread = new Thread(processingTask);
+		processingThread.setDaemon(true);
+		processingThread.start();
 		
-		// Listener to update GUI after each iteration
-		update.messageProperty().addListener(new ChangeListener<String>() {
+		//listener to update GUI after each cycle
+		processingTask.messageProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				updateGrid();
-				updateNumEmpty();
+				updateGrid();		//updates icons visible in the grid
+				updateNumEmpty();	//updates total empty spot display
 			}
 		});
 	}
 	
 	/*
-	 * TODO implement this, fool!
 	 * Uses results of image processing to update icons in grid view
 	 */
 	public void updateGrid() {
-		System.out.println("The wheels on the bus go round and round"); //TEST
+		//System.out.println("The wheels on the bus go round and round"); //test line
 		
-		//TODO change icon visibility based on spot status
+		//change icon visibility based on spot status
+		if (!web.getParkingGrid().getSpotArray()[0].getStatus())
+			carIcon1.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[1].getStatus())
+			carIcon2.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[2].getStatus())
+			carIcon3.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[3].getStatus())
+			carIcon4.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[4].getStatus())
+			carIcon5.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[5].getStatus())
+			carIcon6.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[6].getStatus())
+			carIcon7.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[7].getStatus())
+			carIcon8.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[8].getStatus())
+			carIcon9.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[9].getStatus())
+			carIcon10.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[10].getStatus())
+			carIcon11.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[11].getStatus())
+			carIcon12.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[12].getStatus())
+			carIcon13.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[13].getStatus())
+			carIcon14.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[14].getStatus())
+			carIcon15.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[15].getStatus())
+			carIcon16.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[16].getStatus())
+			carIcon17.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[17].getStatus())
+			carIcon18.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[18].getStatus())
+			carIcon19.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[19].getStatus())
+			carIcon20.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[20].getStatus())
+			carIcon21.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[21].getStatus())
+			carIcon22.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[22].getStatus())
+			carIcon23.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[23].getStatus())
+			carIcon24.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[24].getStatus())
+			carIcon25.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[25].getStatus())
+			carIcon26.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[26].getStatus())
+			carIcon27.setVisible(true);
+		if (!web.getParkingGrid().getSpotArray()[27].getStatus())
+			carIcon28.setVisible(true);
 	}
 	
+	/**
+	 * Updates GUI output for the total number of empty spots
+	 */
 	public void updateNumEmpty() {
-		System.out.println("Two wrongs don't make a right, but two rights make a U-turn!"); //TEST
+		//System.out.println("Two wrongs don't make a right, but two rights make a U-turn!"); //test line
 		
-		//TODO assign number of empty spots to numEmpty
+		//assign number of empty spots to numEmpty
+		numEmpty = 0;
+		for (ParkingSpots spot: web.getParkingGrid().getSpotArray()) {
+			if (spot.getStatus())
+				numEmpty ++;
+		}
+		
 		
 		if (numEmpty < 0) currentSpotsAvailableText.setText("NaN");
 		else currentSpotsAvailableText.setText(Integer.toString(numEmpty));
@@ -325,10 +385,10 @@ public class GuiView implements Initializable {
 		closeFromMenu();
 		clearGrid();
 		
-		// Property binding for spot label overlay checkbox
+		//property binding for spot label overlay check-box
 		paneSpotLabelOverlay.visibleProperty().bind(checkBoxLabelOverlay.selectedProperty());
 		
-		updateCamView();
-		updateGridView();
+		updateCamView();	//executes camTimer
+		updateGridView();	//executes processingThread
 	}
 } //end GuiView
