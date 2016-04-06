@@ -48,7 +48,8 @@ public class WebCommunications
     Point end;
     
     public static File imageForGUIMadness = new File("src/main/resources/getImageResult.jpg");
-	
+	public static boolean grabFail = false;
+    
 	/**
 	 * Blank constructor for WebCommunication.java
 	 */
@@ -90,15 +91,9 @@ public class WebCommunications
 		grabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg"); 
 	    grabber.setFormat("mjpeg");
 	    System.out.println("Making connection...");
-		
 	    grabber.start();
 	    
-	    //Frame frame1 = grabber.grab();
-	    
-	    saveImage();	    	
-	    
-		
-	    //grabber.stop(); let's hope this doesn't break anything
+	    saveImage();
 	}
 	
 	/**
@@ -109,15 +104,19 @@ public class WebCommunications
 	{
 		try {
 			frame = grabber.grab();
+			grabFail = false;
 		} catch (Exception e) {
 	    	System.out.println("No grabby grab.");
+	    	grabFail = true;
 	    }
 		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
 		BufferedImage image = javaconverter.convert(frame);
 		try {
-			ImageIO.write(image, "jpg", imageForGUIMadness /*new File("src/main/resources/getImageResult.jpg")*/);
+			ImageIO.write(image, "jpg", imageForGUIMadness);
+			grabFail = false;
 		} catch (IOException e) {
 			System.out.println("Failed.");
+			grabFail = true;
 		}
 	}
 

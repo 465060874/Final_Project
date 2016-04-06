@@ -33,7 +33,6 @@ public class App extends Application
 		String fileName = "src/main/resources/splash.png";
         ImageIcon icon = new ImageIcon(fileName);
         JLabel label = new JLabel(icon, SwingConstants.CENTER);
-		//JFrame frame = new JFrame("TitleLessJFrame");
 	    frame.getContentPane().add(label);
 	    frame.setUndecorated(true);
 	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -127,10 +127,13 @@ public class GuiView implements Initializable {
 				
 				//delete image file
 				boolean done = false;
-				while (!done) {
+				for (int i = 0; i < 100; i ++) {
 					done = WebCommunications.imageForGUIMadness.delete();
-					System.out.println(done);
+					if (done) {
+						break;
+					}
 				}
+				System.out.println(done);
 				
 				//terminate program
 				Platform.exit();
@@ -160,10 +163,13 @@ public class GuiView implements Initializable {
 			
 			//delete image file
 			boolean done = false;
-			while (!done) {
+			for (int i = 0; i < 100; i ++) {
 				done = WebCommunications.imageForGUIMadness.delete();
-				System.out.println(done);
+				if (done) {
+					break;
+				}
 			}
+			System.out.println(done);
 			
 			//terminate program
 			Platform.exit();
@@ -206,28 +212,41 @@ public class GuiView implements Initializable {
 	public void updateCamView() {
 		//Initial image pull, also opens connection to webcam
 		try {
-			
 			WebCommunications.getImage();
 		} catch (Exception e) {
 			System.out.println("Boo get :(");
+			imageLastUpdateText.setText("ERROR: check network");
 		}
 		
-		// timer task to update webcam feed TODO make this cleaner; property binding?
+		// timer task to update webcam feed
 		camTimer = new Timer();
 		camTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				//System.out.println("I'm alive!");
+				//System.out.println(WebCommunications.grabFail);
 				try {	//pull image
-					WebCommunications.saveImage();
+					if (WebCommunications.grabFail) {
+						WebCommunications.getImage();
+					}
+					else {
+						WebCommunications.saveImage();
+					}
 				} catch (Exception e) {
 					System.out.println("Boo save :(");
 				}
 				imageFile = WebCommunications.imageForGUIMadness;			//pull image file from system TODO change path
 				image = new Image(imageFile.toURI().toString());			//create Image from File
 				webcamView.setImage(image);									//display Image in GUI
-				imageLastUpdateText.setText(time.format(Calendar.getInstance().getTime()) 	//update update time
-						+ " " + date.format(Calendar.getInstance().getTime()));
+				if (WebCommunications.grabFail) {
+					imageLastUpdateText.setText("ERROR: check network");
+					webcamView.setVisible(false);
+				}
+				else {
+					imageLastUpdateText.setText(time.format(Calendar.getInstance().getTime()) 	//update update time
+							+ " " + date.format(Calendar.getInstance().getTime()));
+					webcamView.setVisible(true);
+				}
+				
 			}
 		}, 3000, 30);	// change webcam view update interval here!
 	}
@@ -248,9 +267,11 @@ public class GuiView implements Initializable {
 				
 				while (true) {	//loop forever
 					Thread.sleep(UPDATE_INTERVAL);
-					System.out.println("Ding, fries are done.");
 					
-					//web.processImage("getImageResult.jpg");
+					if (imageFile.exists()) {
+						System.out.println("Ding, fries are done.");
+						//web.processImage("getImageResult.jpg");	TODO get this working
+					}
 					
 					updateMessage(Double.toString(Math.random()));	//triggers listener to update GUI
 				}
