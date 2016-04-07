@@ -19,9 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -39,19 +36,15 @@ import javafx.stage.WindowEvent;
 public class GuiView implements Initializable {
 
 	// GUI objects loaded from guiMain.fxml
-	@FXML private MenuItem menuClose;
-	@FXML private MenuItem menuAbout;
-	@FXML private MenuItem menuSaveFrame;
-    @FXML private TabPane viewTabPane;
-    @FXML private Tab webcamTab;
     @FXML private ImageView webcamView;
     @FXML private Text imageLastUpdateText;
     @FXML private DatePicker predictionDateSelector;
     @FXML private ComboBox<?> predictionTimeSelector;
     @FXML private Button predictionButton;
+    @FXML private Button buttonHelp;
+    @FXML private Button buttonQuit;
     @FXML private TextField predictionOutputField;
     @FXML private CheckBox checkBoxLabelOverlay;
-    @FXML private Tab detailTab;
     @FXML private GridPane parkingGridPane;
     @FXML private ImageView carIcon1;
     @FXML private ImageView carIcon2;
@@ -142,7 +135,7 @@ public class GuiView implements Initializable {
 	 */
 	@SuppressWarnings("deprecation")
 	public void closeFromMenu() {
-		menuClose.setOnAction(e -> {
+		buttonQuit.setOnAction(e -> {
 			camTimer.cancel();			//stop the camView thread
 			processingThread.stop();	//stop the processing thread
 			App.frame.dispose();		//stop swinging
@@ -165,6 +158,17 @@ public class GuiView implements Initializable {
 			System.out.println(done);	//TODO test line
 			
 			Platform.exit();	//terminate program
+		});
+	}
+
+	/**
+	 * TODO Tim
+	 * Shows built-in program instructions
+	 */
+	public void showUserGuide() {
+		buttonHelp.setOnAction(e -> {
+			//TODO User Guide goes here
+			System.out.println("Tim's not done yet.");
 		});
 	}
 	
@@ -383,10 +387,17 @@ public class GuiView implements Initializable {
 
 		closeRedX();
 		closeFromMenu();
+		showUserGuide();
 		clearGrid();
 		
 		//property binding for spot label overlay check-box
 		paneSpotLabelOverlay.visibleProperty().bind(checkBoxLabelOverlay.selectedProperty());
+		Platform.runLater(new Runnable() {		//focus on check-box
+	        @Override
+	        public void run() {
+	        	checkBoxLabelOverlay.requestFocus();
+	        }
+	    });
 		
 		updateCamView();	//executes camTimer
 		updateGridView();	//executes processingThread
