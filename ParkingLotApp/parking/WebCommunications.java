@@ -37,7 +37,7 @@ public class WebCommunications
 	public static FrameGrabber grabber;
 	private static Frame frame;
 
-	private ParkingLotGrid parkingLot = new ParkingLotGrid(); // added initialization due to NullPointer
+	private ParkingLotGrid parkingLot; // added initialization due to NullPointer
 	//private String error;
 	Mat img ;
 	Mat crop;
@@ -55,6 +55,8 @@ public class WebCommunications
 	 */
 	public WebCommunications()
 	{
+		parkingLot = new ParkingLotGrid();
+		parkingLot.setGridSize(28);
 //		processImage("ParkingOpen.JPG"); //Placed in the GuiView
 	}
 

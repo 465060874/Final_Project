@@ -27,7 +27,7 @@ public class App extends Application {
 	 */
 	@Override
 	public void start(Stage p) {
-		
+		/* 												TODO RE-ENABLE SPLASH SCREEN
 		// Load and display splash screen (Swing)
 		String fileName = "src/main/resources/splash.png";
         ImageIcon icon = new ImageIcon(fileName);
@@ -39,7 +39,7 @@ public class App extends Application {
 	    frame.setLocationRelativeTo(null);	//center on screen
 	    frame.setAlwaysOnTop(true);
 	    frame.setVisible(true);
-	    
+	    */
 	    // Load and display main interface
 		try {
 			Pane mainWindow = (Pane) FXMLLoader.load(getClass().getResource("guiMain.fxml"));
@@ -52,7 +52,7 @@ public class App extends Application {
 		} catch (Exception e) {	//catch exceptions while loading GUI.fxml
 			System.out.println("Ouch, I've encountered a fatal error! :(\nError loading guiMain.fxml. Check it out and help me feel better!");
 		}
-
+/*	TODO
 		// Let splash screen hang out for awhile
 		try {
 			Thread.sleep(2000);
@@ -61,7 +61,7 @@ public class App extends Application {
 		}
 		
 		// Close the splash screen
-		frame.setVisible(false);
+		frame.setVisible(false);*/
 	}
 	
 	/**

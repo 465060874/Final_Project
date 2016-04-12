@@ -12,7 +12,7 @@ public class ParkingLotGrid
 {
 	private int totalSpots = 28; //Starting count with 1 not zero.
 	private boolean isFull;
-	private ParkingSpots[] myGrid = new ParkingSpots[28]; //added initialization due to Null Pointer
+	private ParkingSpots[] myGrid; //added initialization due to Null Pointer
 	private String timeSinceUpdated;
 	public ParkingSpots m_ParkingSpots;	
 
@@ -56,10 +56,7 @@ public class ParkingLotGrid
 	 */
 	public ParkingLotGrid()
 	{
-		//initialize myGrid
-		for (int i = 0; i < myGrid.length; i ++) {
-			myGrid[i] = new ParkingSpots();
-		}
+		
 	}
 	/**
 	 * Sprint 1: No implementation
