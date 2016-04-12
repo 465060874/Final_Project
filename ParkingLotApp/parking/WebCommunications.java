@@ -5,6 +5,7 @@ import java.awt.Point;
 //import java.awt.event.MouseEvent;
 //import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 //import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
@@ -14,11 +15,13 @@ import javax.imageio.ImageIO;
 //import javax.swing.JFrame;
 //import javax.swing.JLabel;
 
+import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 //import org.opencv.core.Range;
 //import org.opencv.core.Scalar;
@@ -49,6 +52,7 @@ public class WebCommunications
     
     public static File imageForGUIMadness = new File("src/main/resources/getImageResult.jpg");
 	public static boolean grabFail = false;
+	private static BufferedImage image;
     
 	/**
 	 * Blank constructor for WebCommunication.java
@@ -112,7 +116,7 @@ public class WebCommunications
 	    	grabFail = true;
 	    }
 		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
-		BufferedImage image = javaconverter.convert(frame);
+		image = javaconverter.convert(frame);
 		try {
 			ImageIO.write(image, "jpg", imageForGUIMadness);
 			grabFail = false;
