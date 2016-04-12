@@ -5,6 +5,7 @@ import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -76,6 +77,8 @@ public class GuiView implements Initializable {
     @FXML private ImageView carIcon28;
     @FXML private Text currentSpotsAvailableText;
     @FXML private Pane paneSpotLabelOverlay;
+    @FXML private Text thereAreCurrently;
+    @FXML private Text spotsAvailable;
 
     // Class Variables
     private Image image;										//The image object to be displayed in the webcam view
@@ -372,13 +375,25 @@ public class GuiView implements Initializable {
 				numEmpty ++;
 		}
 		
-		
+		//display numEmpty
 		if (numEmpty < 0) currentSpotsAvailableText.setText("NaN");
 		else currentSpotsAvailableText.setText(Integer.toString(numEmpty));
 		
+		//color output
 		if (numEmpty <= 5) currentSpotsAvailableText.setFill(Color.RED);
 		else if (numEmpty <= 10) currentSpotsAvailableText.setFill(Color.GOLD);
 		else currentSpotsAvailableText.setFill(Color.LIME);
+		
+		//correct grammar
+		if (numEmpty == 1) {
+			thereAreCurrently.setText("There is currently");
+			spotsAvailable.setText("spot available");
+		}
+		else {
+			thereAreCurrently.setText("There are currently");
+			spotsAvailable.setText("spots available");
+		}
+		
 	}
 	
 	/**
