@@ -1,5 +1,7 @@
 package parking;
 
+import java.awt.Point;
+
 import org.opencv.core.Range;
 import org.opencv.core.Scalar;
 
@@ -12,7 +14,7 @@ public class ParkingLotGrid
 {
 	private int totalSpots = 28; //Starting count with 1 not zero.
 	private boolean isFull;
-	private ParkingSpots[] myGrid; //added initialization due to Null Pointer
+	private ParkingSpots[] myGrid;
 	private String timeSinceUpdated;
 	public ParkingSpots m_ParkingSpots;	
 
@@ -49,6 +51,19 @@ public class ParkingLotGrid
 			new Scalar(170,15,110), new Scalar(165,20,115), new Scalar(150,15,110), new Scalar(150,10,100), new Scalar(150,10,100), new Scalar(140,40,110), 
 			new Scalar(140,40,100), new Scalar(150,30,90), new Scalar(150,20,90), new Scalar(150,20,90)};
 
+	// Outlines the control area for adjusting to weather and light change conditions
+		private Point[] controlAreaStart = {
+				//Top Lot
+				new Point(197, 198), new Point(279, 203), new Point(385, 211), new Point(463, 220), 
+				//Bottom Lot
+				new Point(170, 356), new Point(190, 337), new Point(285, 339)
+		};
+		private Point[] controlAreaEnd = {
+				//Top Lot
+				new Point(243, 220), new Point(345, 219), new Point(470, 227), new Point(558, 232), 
+				//Bottom Lot
+				new Point(210, 384), new Point(251, 375), new Point(337, 382)
+		};
 	
 	/**
 	 * @author Ian McElhenny
@@ -58,14 +73,7 @@ public class ParkingLotGrid
 	{
 		
 	}
-	/**
-	 * Sprint 1: No implementation
-	 */
-	public void finalize() throws Throwable 
-	{
 
-	}
-	
 	/**
 	 * @author Ian McElhenny
 	 * @param size
@@ -144,6 +152,16 @@ public class ParkingLotGrid
 		
 	}
 	
+	/**
+	 * This is used to get the status of the spot, true is empty false is taken
+	 * @param spotNumber
+	 * @return status of spot
+	 */
+	public boolean getStatus(int spotNumber)
+	{
+		return myGrid[spotNumber].getStatus();
+	}
+	
 	//Return array of parking spots
 	/**
 	 * Used to give my object of ParkingSpots to the PredictionModel for logging each spot
@@ -162,5 +180,16 @@ public class ParkingLotGrid
 	public void updateGrid()
 	{
 
+	}
+	
+	//Returns the start point for the control area selected by int i
+	public Point getStartPoint(int i)
+	{
+		return this.controlAreaStart[i];
+	}
+	//Returns the end point for the control area selected by int i
+	public Point getEndPoint(int i)
+	{
+		return this.controlAreaEnd[i];
 	}
 }//end ParkingLotGrid

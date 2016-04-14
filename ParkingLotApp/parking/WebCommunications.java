@@ -23,6 +23,7 @@ import org.bytedeco.javacv.Java2DFrameConverter;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 //import org.opencv.core.Range;
 //import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -34,25 +35,27 @@ import org.opencv.imgproc.Imgproc;
  * @version 1.0
  * @created 19-Feb-2016 5:52:38 PM
  */
-public class WebCommunications  
+public class WebCommunications 
 {
 
 	public static FrameGrabber grabber;
 	private static Frame frame;
 
-	private ParkingLotGrid parkingLot; // added initialization due to NullPointer
-	//private String error;
+	private ParkingLotGrid parkingLot;
+	//public static Mat imageToProcess;
 	Mat img ;
 	Mat crop;
-	Mat blur = null;
-    Mat hsv = null;
+	//Mat blur = null;
+    //Mat hsv = null;
     Mat mask = null;
+    Mat gray;
+    
     Point start;
     Point end;
     
     public static File imageForGUIMadness = new File("src/main/resources/getImageResult.jpg");
 	public static boolean grabFail = false;
-	private static BufferedImage image;
+	private static BufferedImage imageToShow;
     
 	/**
 	 * Blank constructor for WebCommunication.java
@@ -61,7 +64,6 @@ public class WebCommunications
 	{
 		parkingLot = new ParkingLotGrid();
 		parkingLot.setGridSize(28);
-//		processImage("ParkingOpen.JPG"); //Placed in the GuiView
 	}
 
 	/**
@@ -116,9 +118,9 @@ public class WebCommunications
 	    	grabFail = true;
 	    }
 		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
-		image = javaconverter.convert(frame);
+		imageToShow = javaconverter.convert(frame);
 		try {
-			ImageIO.write(image, "jpg", imageForGUIMadness);
+			ImageIO.write(imageToShow, "jpg", imageForGUIMadness);
 			grabFail = false;
 		} catch (IOException e) {
 			System.out.println("Failed.");
@@ -137,6 +139,217 @@ public class WebCommunications
 		return this.parkingLot;
 	}
 
+	// TODO PROCESS IMAGE REV 2
+	public void processImageRev2(String filename)
+	{
+		int erosion_size = 7;
+		int x = 5;
+		int y = 5;
+		int spotAvg = 0;
+		int boundT = 50;
+		int boundBT = 72;
+		int boundBB = 58;
+		int bound;
+		int ctrl = 98;
+		int tweak = 0;
+		int currentCtrlAvg;
+		boolean oldStatus;
+		boolean didChange = false;
+		ParkingSpots[] spotArray = parkingLot.getSpotArray();
+		PredictionModel predictionModel = new PredictionModel();
+		
+		
+		//load opencv library
+		System.loadLibrary("opencv_java2411");
+		
+		//Load image from file
+		img = Highgui.imread("src/main/resources/" + filename);
+	    
+		Size size = new Size(img.width(), img.height());
+		gray = Mat.zeros(size , 0);	
+		
+		//convert color space to gray
+		Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2GRAY);
+	    
+		//put a gaussian blur on the img
+		Imgproc.GaussianBlur(img, img, new Size(x, y), 9);
+	    
+        //Erode the image
+        Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new  Size(2*erosion_size + 1, 2*erosion_size+1));
+		Imgproc.erode(img, img, element);
+	    
+		//equalize the histogram
+		Imgproc.equalizeHist(img, img);
+		
+		//create a copy of gray image
+		gray = img;
+		
+		//Logic to decide if spot is open or nah
+		for(int i = 0; i <= parkingLot.getSpotArray().length-1; i++)
+		{		
+			//Crop to the Nth spot
+			crop = img.submat(spotArray[i].getYRange(), spotArray[i].getXRange());
+			
+			//get average for masking (index 4 is for bottom lot, 0 is for top lot)
+			if(i < 9)
+			{
+				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(0), parkingLot.getEndPoint(0), img);
+				bound = boundT;
+			}
+			else if(i > 8 && i < 22)
+			{
+				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(4), parkingLot.getEndPoint(4), img);
+				bound = boundBT;//top of bottom lot
+			}
+			else
+			{
+				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(4), parkingLot.getEndPoint(4), img);
+				bound = boundBB;//bottom of bottom lot
+			}
+			
+			//get average gray pixel value of spot
+			spotAvg = getAvg(crop, 0);//index is 2 for hsv and 0 for gray
+
+			//Check old status of spot to tell if it changed
+			oldStatus = parkingLot.getStatus(i);		
+			
+			//decide if spot is open or taken
+			if(spotAvg > currentCtrlAvg - bound)//spot is open (255 is white)
+			{
+				if(oldStatus == false)
+				{
+					didChange = true;
+				}
+				System.out.println("Spot: " + (i+1) + " is open");
+				parkingLot.setStatus(i, true);//spot empty
+			}
+			else //spot taken (0 is black)
+			{
+				if(oldStatus == true)
+				{
+					didChange = true;
+				}
+				System.out.println("Spot: " + (i+1) + " is taken");
+				parkingLot.setStatus(i, false);//spot occupied
+			}
+//			System.out.println("Spot Average:" + spotAvg);
+//			System.out.println("Current Average - bound:" + (currentCtrlAvg - bound));
+		}
+		
+		//Log results if the spot status changed
+		if(didChange)
+		{
+			try {
+				predictionModel.addToHistory();
+			} catch (IOException e) {
+				System.out.println("IOException: predictionModel.addToHistory()");
+			}
+		}
+	}
+	
+	//returns a scalar of the average value of the three indexes of sent image. Image is full image, start and end are points on that image.
+		/**
+		 * This method returns a scalar of the average value of the three indexes of sent image. Image is full image, start and end are points on that image.
+		 * @author Ian McElhenny
+		 * @param start
+		 * @param end
+		 * @param hsv
+		 * @return
+		 */
+		public Scalar getHsvAvg(Point start, Point end, Mat hsv)
+		{
+			int x = (int)(end.getX()-start.getX());
+			int y = (int)(end.getY()-start.getY());
+			int one = 0;
+			int two = 0;
+			int three = 0;
+			int count = 0;
+			
+			for(int i = 0; i <= x; i++)
+			{
+				for(int j = 0; j <= y; j++)
+				{
+					one = (one + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[0]);
+					two = (two + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[1]);
+					three = (three + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[2]);
+					count++;
+				}
+				
+			}
+			one = one/count;
+			two = two/count;
+			three = three/count;
+			
+//			System.out.println("Average");
+//			System.out.println("HSV 1: " + one);
+//			System.out.println("HSV 2: " + two);
+//			System.out.println("HSV 3: " + three + "\n\n");
+			return new Scalar(one, two, three);
+			
+		}
+		
+		//return the average gray pixel given a gray matrix and a start and end point for the region. Image is full size image.
+		/**
+		 * This method will return the average gray pixel given a gray matrix and a start and end point for the region. Image is full size image.
+		 * @author Ian McElhenny
+		 * @param start
+		 * @param end
+		 * @param gray
+		 * @return average (int)
+		 */
+		public int getGrayAvg(Point start, Point end, Mat gray)
+		{
+			int x = (int)(end.getX()-start.getX());
+			int y = (int)(end.getY()-start.getY());
+			int one = 0;
+			int count = 0;
+			
+			for(int i = 0; i <= x; i++)
+			{
+				for(int j = 0; j <= y; j++)
+				{
+					one = (one + (int)gray.get((int)(j + start.getY()), (int)(i + start.getX()))[0]); //row, column
+					count++; 
+				}
+				
+			}
+			one = one/count;
+//			System.out.println("Average Gray: " + one);
+			return one;
+			
+		}
+		
+		
+		//returns the average of the submat given, and index controls if it is hsv after gray scale(2) or just gray scale(0).
+		/**
+		 * This method returns the average of the submat given. Index controls if it is hsv after gray scale(2) or just gray scale(0).
+		 * @author Ian McElhenny
+		 * @param img
+		 * @param index
+		 * @return average (int)
+		 */
+		public int getAvg(Mat img, int index) {
+			int x = img.height();
+			int y = img.width();
+			int one = 0;
+			int count = 0;
+			
+			for(int i = 0; i < x; i++)
+			{
+				for(int j = 0; j < y; j++)
+				{
+					one = (one + (int)img.get(i, j)[index]);
+					count++;
+				}
+				
+			}
+			one = one/count;
+//			System.out.println("Average");
+//			System.out.println("Average: " + one + "\n\n");
+			return one;
+			
+		}
+
 	//Takes a img of the parking lot, subdivides it into spots, process each spot in a for loop then 
 	/**
 	 * @author Ian McElhenny
@@ -144,6 +357,7 @@ public class WebCommunications
 	 * 
 	 * Reads an image from a file name, then processes the image
 	 */
+/*
 	public void processImage(String filename)
 	{
 		System.loadLibrary("opencv_java2411");
@@ -228,7 +442,7 @@ public class WebCommunications
 //		Image image3 = Mat2BufferedImage(img);
 //	    displayImage(image3);
 	}
-	
+	*/
 //	//copy to test individual spots (TEMP)
 //	public void processImage(int i)
 //	{

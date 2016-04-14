@@ -131,7 +131,7 @@
                   <Image url="@../src/main/resources/sidewalk.jpg" />
                </image>
             </ImageView>
-            <ImageView fitHeight="45.0" fitWidth="350.0" pickOnBounds="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+            <ImageView fx:id="imageRoad" fitHeight="45.0" fitWidth="350.0" pickOnBounds="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
                <image>
                   <Image url="@../src/main/resources/road.jpg" />
                </image>
@@ -616,7 +616,7 @@
                   <Image url="@../src/main/resources/tree.jpg" />
                </image>
             </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="11" GridPane.rowIndex="4">
+            <ImageView fx:id="imageTree" fitHeight="25.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="11" GridPane.rowIndex="4">
                <image>
                   <Image url="@../src/main/resources/tree.jpg" />
                </image>
