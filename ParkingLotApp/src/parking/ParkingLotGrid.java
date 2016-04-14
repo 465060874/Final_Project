@@ -57,13 +57,13 @@ public class ParkingLotGrid
 			//Top Lot
 			new Point(197, 198), new Point(279, 203), new Point(385, 211), new Point(463, 220), 
 			//Bottom Lot
-			new Point(105, 333), new Point(190, 337), new Point(285, 339)
+			new Point(170, 356), new Point(190, 337), new Point(285, 339)
 	};
 	private Point[] controlAreaEnd = {
 			//Top Lot
 			new Point(243, 220), new Point(345, 219), new Point(470, 227), new Point(558, 232), 
 			//Bottom Lot
-			new Point(160, 371), new Point(251, 375), new Point(337, 382)
+			new Point(210, 384), new Point(251, 375), new Point(337, 382)
 	};
 
 	

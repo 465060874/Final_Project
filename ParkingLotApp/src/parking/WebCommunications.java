@@ -24,7 +24,7 @@ import org.opencv.imgproc.Imgproc;
  * @version 1.0
  * @created 19-Feb-2016 5:52:38 PM
  */
-public class WebCommunications //implements MouseListener
+public class WebCommunications implements MouseListener
 {
 	//////////////////////
 	//////COPY ME/////////
@@ -37,7 +37,8 @@ public class WebCommunications //implements MouseListener
 	//////////////////////
 	//////COPY ME/////////
 	//////////////////////
-    
+	Mat gray;
+
     
     Point start;
     Point end;
@@ -65,6 +66,7 @@ public class WebCommunications //implements MouseListener
 //		processImage("ParkingOpen.JPG");
 //		processImageRev2("ParkingOpen.JPG");
 //		processImageRev2("topOpen.JPG");
+//		processImageRev2("Apil_13_330PM.jpg");
 		processImageRev2("bottomOpen.JPG");
 
 
@@ -104,16 +106,22 @@ public class WebCommunications //implements MouseListener
 	 */
 	public void processImageRev2(String filename)
 	{
-		double threshold = 0.1;
 		int erosion_size = 7;
 		int x = 5;
 		int y = 5;
-		int black = 0;
-		int white = 0;
-		double ratio = 0;
+		int spotAvg = 0;
+		int boundT = 50;
+		int boundBT = 72;
+		int boundBB = 58;
+		int bound;
+		int ctrl = 98;
+		int tweak = 0;
+		int currentCtrlAvg;
 		boolean oldStatus;
+		boolean didChange = false;
 		ParkingSpots[] spotArray = parkingLot.getSpotArray();
 		PredictionModel predictionModel = new PredictionModel();
+		
 		
 		//load opencv library
 		System.loadLibrary("opencv_java2411");
@@ -121,6 +129,9 @@ public class WebCommunications //implements MouseListener
 		//Load image from file
 		img = Highgui.imread("src/main/resources/" + filename);
 	    
+		Size size = new Size(img.width(), img.height());
+		gray = Mat.zeros(size , 0);	
+		
 		//convert color space to gray
 		Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2GRAY);
 	    
@@ -134,75 +145,147 @@ public class WebCommunications //implements MouseListener
 		//equalize the histogram
 		Imgproc.equalizeHist(img, img);
 		
-		//convert to hsv
-		Imgproc.cvtColor(img, img, Imgproc.COLOR_GRAY2RGB);
-		Imgproc.cvtColor(img, img, Imgproc.COLOR_RGB2HSV);
-	    
-	    //mask image to black and white
-		Scalar lower = new Scalar(0,0,80);
-		Scalar upper = new Scalar(0,0,255);
-		Size size = new Size(img.width(), img.height());
-		mask = Mat.zeros(size , 0);				
-		Core.inRange(img, lower, upper, mask);
+		//create a copy of gray image
+		gray = img;
 		
 		//Logic to decide if spot is open or nah
-		//divide up into individual spots
-		//get the average of the pixels in sub image
-		//if the average is above a threshold say spot is open (255 is white)
-		//if the average is below a certain threshold say spot is taken (0 is black)
-		//loop through array or parking lot and process each spot
 		for(int i = 0; i <= parkingLot.getSpotArray().length-1; i++)
 		{		
-			black = 1;
-			white = 1;
 			//Crop to the Nth spot
-			crop = mask.submat(spotArray[i].getYRange(), spotArray[i].getXRange());
-					
+			crop = img.submat(spotArray[i].getYRange(), spotArray[i].getXRange());
+			
+			//get average for masking (index 4 is for bottom lot, 0 is for top lot)
+			if(i < 9)
+			{
+				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(0), parkingLot.getEndPoint(0), img);
+				bound = boundT;
+			}
+			else if(i > 8 && i < 22)
+			{
+				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(4), parkingLot.getEndPoint(4), img);
+				bound = boundBT;//top of bottom lot
+			}
+			else
+			{
+				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(4), parkingLot.getEndPoint(4), img);
+				bound = boundBB;//bottom of bottom lot
+			}
+			
+			//get average gray pixel value of spot
+			spotAvg = getAvg(crop, 0);//index is 2 for hsv and 0 for gray
+
 			//Check old status of spot to tell if it changed
 			oldStatus = parkingLot.getStatus(i);		
 			
-			//Count Black and white pixels
-			for(int g = 0; g <= crop.size().width - 1; g++)
-			{
-				for(int h = 0; h <= crop.size().height - 1; h++)
-				{
-					if(crop.get(h, g)[0] == 0.0)
-					{
-						black++;
-					}
-					else if(crop.get(h, g)[0] == 255.0)
-					{
-						white++;
-					}
-				}
-			}
-			
 			//decide if spot is open or taken
-			ratio = black/white;
-			if(ratio < threshold)//spot is open (255 is white)
+			if(spotAvg > currentCtrlAvg - bound)//spot is open (255 is white)
 			{
 				if(oldStatus == false)
 				{
-					//TODO call logger function
-					predictionModel.addToHistory();
+					didChange = true;
 				}
 				System.out.println("Spot: " + (i+1) + " is open");
 				parkingLot.setStatus(i, true);//spot empty
 			}
-			else if(ratio >= threshold) //spot taken (0 is black)
+			else //spot taken (0 is black)
 			{
 				if(oldStatus == true)
 				{
-					//TODO call logger function
-					predictionModel.addToHistory();
+					didChange = true;
 				}
 				System.out.println("Spot: " + (i+1) + " is taken");
 				parkingLot.setStatus(i, false);//spot occupied
 			}
+//			System.out.println("Spot Average:" + spotAvg);
+//			System.out.println("Current Average - bound:" + (currentCtrlAvg - bound));
+		}
+		
+		//Log results if the spot status changed
+		if(didChange)
+		{
+			predictionModel.addToHistory();
 		}
 	}
 	
+	//returns a scalar of the average value of the three indexes of sent image. Image is full image, start and end are points on that image.
+	public Scalar getHsvAvg(Point start, Point end, Mat hsv)
+	{
+		int x = (int)(end.getX()-start.getX());
+		int y = (int)(end.getY()-start.getY());
+		int one = 0;
+		int two = 0;
+		int three = 0;
+		int count = 0;
+		
+		for(int i = 0; i <= x; i++)
+		{
+			for(int j = 0; j <= y; j++)
+			{
+				one = (one + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[0]);
+				two = (two + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[1]);
+				three = (three + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[2]);
+				count++;
+			}
+			
+		}
+		one = one/count;
+		two = two/count;
+		three = three/count;
+		
+//		System.out.println("Average");
+//		System.out.println("HSV 1: " + one);
+//		System.out.println("HSV 2: " + two);
+//		System.out.println("HSV 3: " + three + "\n\n");
+		return new Scalar(one, two, three);
+		
+	}
 	
+	//return the average gray pixel given a gray matrix and a start and end point for the region. Image is full size image.
+	public int getGrayAvg(Point start, Point end, Mat gray)
+	{
+		int x = (int)(end.getX()-start.getX());
+		int y = (int)(end.getY()-start.getY());
+		int one = 0;
+		int count = 0;
+		
+		for(int i = 0; i <= x; i++)
+		{
+			for(int j = 0; j <= y; j++)
+			{
+				one = (one + (int)gray.get((int)(j + start.getY()), (int)(i + start.getX()))[0]); //row, column
+				count++; 
+			}
+			
+		}
+		one = one/count;
+//		System.out.println("Average Gray: " + one);
+		return one;
+		
+	}
+	
+	//returns the average of the submat given, and index controls if it is hsv after gray scale(2) or just gray scale(0).
+	public int getAvg(Mat img, int index)
+	{
+		int x = img.height();
+		int y = img.width();
+		int one = 0;
+		int count = 0;
+		
+		for(int i = 0; i < x; i++)
+		{
+			for(int j = 0; j < y; j++)
+			{
+				one = (one + (int)img.get(i, j)[index]);
+				count++;
+			}
+			
+		}
+		one = one/count;
+//		System.out.println("Average");
+//		System.out.println("Average: " + one + "\n\n");
+		return one;
+		
+	}
 	//////////////////////
 	//////COPY ME/////////
 	//////////////////////
@@ -626,90 +709,90 @@ public class WebCommunications //implements MouseListener
 ////	
 //	
 //	
-//	/////////////
-//	//Temporary//
-//	/////////////
-//	public BufferedImage Mat2BufferedImage(Mat m)
-//	{
-//		// Fastest code
-//		// output can be assigned either to a BufferedImage or to an Image
-//
-//		int type = BufferedImage.TYPE_BYTE_GRAY;
-//		if ( m.channels() > 1 ) {
-//		    type = BufferedImage.TYPE_3BYTE_BGR;
-//		}
-//		int bufferSize = m.channels()*m.cols()*m.rows();
-//		byte [] b = new byte[bufferSize];
-//		m.get(0,0,b); // get all the pixels
-//		BufferedImage image = new BufferedImage(m.cols(),m.rows(), type);
-//		final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-//		System.arraycopy(b, 0, targetPixels, 0, b.length);  
-//		return image;
-//	}
-//	JFrame frame;
-//	public void displayImage(Image img2) 
-//	{
-//    	//BufferedImage img=ImageIO.read(new File("/HelloOpenCV/lena.png"));
-//    	ImageIcon icon=new ImageIcon(img2);
-//    	frame=new JFrame();
-//    	frame.setLayout(new FlowLayout());        
-//    	frame.setSize(img2.getWidth(null)+50, img2.getHeight(null)+50);     
-//    	JLabel lbl=new JLabel();
-//    	lbl.setIcon(icon);
-//    	lbl.addMouseListener(this);
-//    	frame.add(lbl);
-//    	frame.setVisible(true);
-//    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//	}
+	/////////////
+	//Temporary//
+	/////////////
+	public BufferedImage Mat2BufferedImage(Mat m)
+	{
+		// Fastest code
+		// output can be assigned either to a BufferedImage or to an Image
+
+		int type = BufferedImage.TYPE_BYTE_GRAY;
+		if ( m.channels() > 1 ) {
+		    type = BufferedImage.TYPE_3BYTE_BGR;
+		}
+		int bufferSize = m.channels()*m.cols()*m.rows();
+		byte [] b = new byte[bufferSize];
+		m.get(0,0,b); // get all the pixels
+		BufferedImage image = new BufferedImage(m.cols(),m.rows(), type);
+		final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+		System.arraycopy(b, 0, targetPixels, 0, b.length);  
+		return image;
+	}
+	JFrame frame;
+	public void displayImage(Image img2) 
+	{
+    	//BufferedImage img=ImageIO.read(new File("/HelloOpenCV/lena.png"));
+    	ImageIcon icon=new ImageIcon(img2);
+    	frame=new JFrame();
+    	frame.setLayout(new FlowLayout());        
+    	frame.setSize(img2.getWidth(null)+50, img2.getHeight(null)+50);     
+    	JLabel lbl=new JLabel();
+    	lbl.setIcon(icon);
+    	lbl.addMouseListener(this);
+    	frame.add(lbl);
+    	frame.setVisible(true);
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	
 //	
-//	
-//	
-//	///////////////////
-//	//Mouse listeners//
-//	///////////////////
-//	public void mouseClicked(MouseEvent e) 
-//	{
-////		frame.dispose();
-////	       System.out.println("HSV 1: " + hsv.get(e.getX(), e.getY())[0]);
-////	       System.out.println("HSV 2: " + hsv.get(e.getX(), e.getY())[1]);
-////	       System.out.println("HSV 3: " + hsv.get(e.getX(), e.getY())[2]);
-//
-////	       System.out.println(e.getPoint());
-//    }
-//
-//	public void mouseEntered(MouseEvent arg0) 
-//	{
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	public void mouseExited(MouseEvent arg0) 
-//	{
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	
-//	public void mousePressed(MouseEvent e) 
-//	{
-//		System.out.println("Entered ");
-//   System.out.println(e.getPoint());
-//		
-//		start = e.getPoint();
-//		
-//	}
-//
-//	
-//	public void mouseReleased(MouseEvent e) 
-//	{
-//		System.out.println("Exited");
-//		System.out.println(e.getPoint());
-//		end = e.getPoint();
-//		
+	///////////////////
+	//Mouse listeners//
+	///////////////////
+	public void mouseClicked(MouseEvent e) 
+	{
+//		frame.dispose();
+//	       System.out.println("HSV 1: " + hsv.get(e.getX(), e.getY())[0]);
+//	       System.out.println("HSV 2: " + hsv.get(e.getX(), e.getY())[1]);
+//	       System.out.println("HSV 3: " + hsv.get(e.getX(), e.getY())[2]);
+
+//	       System.out.println(e.getPoint());
+    }
+
+	public void mouseEntered(MouseEvent arg0) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited(MouseEvent arg0) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	public void mousePressed(MouseEvent e) 
+	{
+		System.out.println("Entered ");
+   System.out.println(e.getPoint());
+		
+		start = e.getPoint();
+		
+	}
+
+	
+	public void mouseReleased(MouseEvent e) 
+	{
+		System.out.println("Exited");
+		System.out.println(e.getPoint());
+		end = e.getPoint();
+		
 //		getHsvMax(start, end, img);
-//		getHsvAvg(start, end, img);
-//
-//	}
+		getGrayAvg(start, end, gray);
+
+	}
 //	
 //	
 //	//For a given matrix of pixels and an area from start (x1, y1 pixel) to end (x2, y2 pixel) it tells the largest and smallest value of the pixels.
