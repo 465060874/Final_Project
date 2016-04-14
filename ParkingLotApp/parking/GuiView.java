@@ -88,12 +88,14 @@ public class GuiView implements Initializable {
     private File imageFile;										//File object used to pull webcam image
     private WebCommunications web = new WebCommunications();	//WebCommunications object used for magic
     private int numEmpty = -1;									//Number of empty spots
+    private boolean isProcessing = false;						//Triggers camera view to stop updating when image being processed
     
-    // UPDATE VALUES
-    private final long CAM_DELAY 		= 3000;		//how long to wait to start pulling images
-    private final long CAM_UPDATE_RATE 	= 30;		//how often to pull new image
-    private final long PROCESS_DELAY 	= 0;		//TODO MIGHT BE OKAY AT ZERO how long to wait to start processing images
-    private final long PROCESS_RATE 	= 5000;		//how often to process image
+    // TWEAKABLE VALUES
+    private final long CAM_DELAY 			= 3000;		//How long to wait to start pulling images
+    private final long CAM_UPDATE_RATE 		= 30;		//How often to pull new image
+    private final long PROCESS_DELAY 		= 0;		//How long to wait to start processing images
+    private final long PROCESS_RATE 		= 4000;		//How often to process image
+    private final long CAMERA_SLEEP_RATE	= 40;		//How long to wait to process next image after interrupting camera update
     
     // Date and Time
 	SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd");
@@ -229,10 +231,10 @@ public class GuiView implements Initializable {
 				//System.out.println(WebCommunications.grabFail);		//test line
 				try {	//pull image
 					if (WebCommunications.grabFail) {
-						WebCommunications.getImage();
+						if (!isProcessing) WebCommunications.getImage();	//get new image unless processing is occurring
 					}
 					else {
-						WebCommunications.saveImage();
+						if (!isProcessing) WebCommunications.saveImage();	//get new image unless processing is occurring
 					}
 				} catch (Exception e) {
 					System.out.println("Boo save :(");	//TODO test line
@@ -271,10 +273,14 @@ public class GuiView implements Initializable {
 				while (true) {	//loop forever
 					Thread.sleep(PROCESS_RATE);
 					
+					isProcessing = true;	//stop saving new images until current image processed
+					Thread.sleep(CAMERA_SLEEP_RATE);
 					if (imageFile.exists()) {
 						System.out.println("Ding, fries are done (calling web.processImage())");	//TODO test line
 						web.processImage("getImageResult.jpg");	//TODO get this working
 					}
+					
+					isProcessing = false;	//start saving new images now that current image is processed
 					
 					updateMessage(Double.toString(Math.random()));	//triggers listener to update GUI
 				}
