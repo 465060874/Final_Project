@@ -34,10 +34,10 @@ public class WebCommunications implements MouseListener
 	Mat img ;
 	Mat crop;
     Mat mask = null;
+	Mat gray;
 	//////////////////////
 	//////COPY ME/////////
 	//////////////////////
-	Mat gray;
 
     
     Point start;
@@ -84,7 +84,7 @@ public class WebCommunications implements MouseListener
 
 	}
 	
-	//////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////COPY ME/////////
 	//////////////////////
 	
@@ -208,6 +208,14 @@ public class WebCommunications implements MouseListener
 	}
 	
 	//returns a scalar of the average value of the three indexes of sent image. Image is full image, start and end are points on that image.
+	/**
+	 * This method returns a scalar of the average value of the three indexes of sent image. Image is full image, start and end are points on that image.
+	 * @author Ian McElhenny
+	 * @param start
+	 * @param end
+	 * @param hsv
+	 * @return
+	 */
 	public Scalar getHsvAvg(Point start, Point end, Mat hsv)
 	{
 		int x = (int)(end.getX()-start.getX());
@@ -241,6 +249,14 @@ public class WebCommunications implements MouseListener
 	}
 	
 	//return the average gray pixel given a gray matrix and a start and end point for the region. Image is full size image.
+	/**
+	 * This method will return the average gray pixel given a gray matrix and a start and end point for the region. Image is full size image.
+	 * @author Ian McElhenny
+	 * @param start
+	 * @param end
+	 * @param gray
+	 * @return average (int)
+	 */
 	public int getGrayAvg(Point start, Point end, Mat gray)
 	{
 		int x = (int)(end.getX()-start.getX());
@@ -263,7 +279,15 @@ public class WebCommunications implements MouseListener
 		
 	}
 	
+	
 	//returns the average of the submat given, and index controls if it is hsv after gray scale(2) or just gray scale(0).
+	/**
+	 * This method returns the average of the submat given. Index controls if it is hsv after gray scale(2) or just gray scale(0).
+	 * @author Ian McElhenny
+	 * @param img
+	 * @param index
+	 * @return average (int)
+	 */
 	public int getAvg(Mat img, int index)
 	{
 		int x = img.height();
@@ -288,7 +312,7 @@ public class WebCommunications implements MouseListener
 	}
 	//////////////////////
 	//////COPY ME/////////
-	//////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	
