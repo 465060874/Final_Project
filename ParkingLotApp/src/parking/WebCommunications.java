@@ -110,9 +110,9 @@ public class WebCommunications implements MouseListener
 		int x = 5;
 		int y = 5;
 		int spotAvg = 0;
-		int boundT = 50;
-		int boundBT = 72;
-		int boundBB = 58;
+		int boundT = 60;
+		int boundBT = 30;
+		int boundBB = 30;
 		int bound;
 		int ctrl = 98;
 		int tweak = 0;
@@ -128,6 +128,9 @@ public class WebCommunications implements MouseListener
 		
 		//Load image from file
 		img = Highgui.imread("src/main/resources/" + filename);
+		
+		Image image2 = Mat2BufferedImage(img);
+	    displayImage(image2);
 	    
 		Size size = new Size(img.width(), img.height());
 		gray = Mat.zeros(size , 0);	
@@ -155,19 +158,17 @@ public class WebCommunications implements MouseListener
 			crop = img.submat(spotArray[i].getYRange(), spotArray[i].getXRange());
 			
 			//get average for masking (index 4 is for bottom lot, 0 is for top lot)
+			currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(i), parkingLot.getEndPoint(i), img);
 			if(i < 9)
 			{
-				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(0), parkingLot.getEndPoint(0), img);
 				bound = boundT;
 			}
 			else if(i > 8 && i < 22)
 			{
-				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(4), parkingLot.getEndPoint(4), img);
 				bound = boundBT;//top of bottom lot
 			}
 			else
 			{
-				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(4), parkingLot.getEndPoint(4), img);
 				bound = boundBB;//bottom of bottom lot
 			}
 			
@@ -196,10 +197,11 @@ public class WebCommunications implements MouseListener
 				System.out.println("Spot: " + (i+1) + " is taken");
 				parkingLot.setStatus(i, false);//spot occupied
 			}
-//			System.out.println("Spot Average:" + spotAvg);
-//			System.out.println("Current Average - bound:" + (currentCtrlAvg - bound));
+			System.out.println("Spot Average:" + spotAvg);
+			System.out.println("Current Average - bound:" + (currentCtrlAvg - bound));
 		}
-		
+		Image image1 = Mat2BufferedImage(img);
+	    displayImage(image1);
 		//Log results if the spot status changed
 		if(didChange)
 		{

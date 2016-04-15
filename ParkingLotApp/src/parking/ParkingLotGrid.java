@@ -55,16 +55,37 @@ public class ParkingLotGrid
 	// Outlines the control area for adjusting to weather and light change conditions
 	private Point[] controlAreaStart = {
 			//Top Lot
-			new Point(197, 198), new Point(279, 203), new Point(385, 211), new Point(463, 220), 
-			//Bottom Lot
-			new Point(170, 356), new Point(190, 337), new Point(285, 339)
+			new Point(190,212), new Point(225,209),new Point(262,210), new Point(298,213),
+			new Point(379,217), new Point(410,220), new Point(450,220), new Point(488,222),
+			new Point(512,225), new Point(185,323), new Point(237,332), new Point(280,333),
+			new Point(328,329), new Point(375,335), new Point(418,335), new Point(418,335), 
+			new Point(418,335), new Point(418,335), new Point(418,335), new Point(418,335), 
+			new Point(418,335), new Point(418,335), new Point(118,364), new Point(176,372), 
+			new Point(227,378), new Point(281,382),new Point(281,382), new Point(281,382)
 	};
+			
+			
+//			new Point(197, 198), new Point(279, 203), new Point(385, 211), new Point(463, 220), 
+//			//Bottom Lot
+//			new Point(170, 356), new Point(190, 337), new Point(285, 339)
+//	};
 	private Point[] controlAreaEnd = {
 			//Top Lot
-			new Point(243, 220), new Point(345, 219), new Point(470, 227), new Point(558, 232), 
-			//Bottom Lot
-			new Point(210, 384), new Point(251, 375), new Point(337, 382)
+			new Point(222,226), new Point(261,227), new Point(296,223), new Point(332,229),
+			new Point(403,228), new Point(439,228), new Point(472,229), new Point(508,234),
+			new Point(540,232), new Point(230,338), new Point(277,349), new Point(325,349),
+			new Point(372,346), new Point(417,348), new Point(459,351), new Point(459,351),
+			new Point(459,351), new Point(459,351), new Point(459,351), new Point(459,351),
+			new Point(459,351), new Point(459,351), new Point(168,389), new Point(222,397), 
+			new Point(281,404), new Point(333,397), new Point(333,397), new Point(333,397)
 	};
+
+			
+			
+//			new Point(243, 220), new Point(345, 219), new Point(470, 227), new Point(558, 232), 
+//			//Bottom Lot
+//			new Point(210, 384), new Point(251, 375), new Point(337, 382)
+//	};
 
 	
 	/**
