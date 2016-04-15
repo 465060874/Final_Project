@@ -66,8 +66,8 @@ public class WebCommunications implements MouseListener
 //		processImage("ParkingOpen.JPG");
 //		processImageRev2("ParkingOpen.JPG");
 //		processImageRev2("topOpen.JPG");
-//		processImageRev2("Apil_13_330PM.jpg");
-		processImageRev2("bottomOpen.JPG");
+		processImageRev2("Apil_13_330PM.jpg");
+//		processImageRev2("bottomOpen.JPG");
 
 
 //		procImage();
@@ -110,7 +110,7 @@ public class WebCommunications implements MouseListener
 		int x = 5;
 		int y = 5;
 		int spotAvg = 0;
-		int boundT = 60;
+		int boundT = 51;
 		int boundBT = 30;
 		int boundBB = 30;
 		int bound;
