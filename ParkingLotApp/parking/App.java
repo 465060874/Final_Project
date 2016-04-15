@@ -52,7 +52,7 @@ public class App extends Application {
 			primaryStage.setResizable(false);
 			primaryStage.centerOnScreen();
 			primaryStage.getIcons().add(new Image(new File("src/main/resources/icon.png").toURI().toString()));
-			//wait for everything to initialize before showing
+			primaryStage.show();
 		} catch (Exception e) {	//catch exceptions while loading GUI.fxml
 			System.out.println("Ouch, I've encountered a fatal error! :(\nError loading guiMain.fxml. Check it out and help me feel better!");
 			e.printStackTrace();
@@ -60,13 +60,12 @@ public class App extends Application {
 
 		// Let splash screen hang out for awhile
 		try {
-			Thread.sleep(4000);
+			Thread.sleep(3000);
 		} catch (Exception e) {
 			System.out.println("Quit it, can't you see I'm trying to sleep here!?");
 		}
 		
 		// Close the splash screen
-		primaryStage.show();
 		try {
 			Thread.sleep(500);
 		} catch (Exception e) {

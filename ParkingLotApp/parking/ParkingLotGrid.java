@@ -12,11 +12,12 @@ import org.opencv.core.Scalar;
  */
 public class ParkingLotGrid 
 {
-	private int totalSpots = 28; //Starting count with 1 not zero.
+
 	private boolean isFull;
 	private ParkingSpots[] myGrid;
 	private String timeSinceUpdated;
-	public ParkingSpots m_ParkingSpots;	
+	public ParkingSpots m_ParkingSpots;
+	private int totalSpots = 28; //Starting count with 1 not zero.
 
 	//Hard Coded array of Ranges for all the spots, if we make it were this is done through the GUI this isnt needed anymore
 	private Range[] xRange = {  new Range(195, 218), new Range(224, 258),new Range(262, 301),new Range(299, 341),new Range(387, 412),new Range(425, 455),
@@ -52,18 +53,40 @@ public class ParkingLotGrid
 			new Scalar(140,40,100), new Scalar(150,30,90), new Scalar(150,20,90), new Scalar(150,20,90)};
 
 	// Outlines the control area for adjusting to weather and light change conditions
-		private Point[] controlAreaStart = {
-				//Top Lot
-				new Point(197, 198), new Point(279, 203), new Point(385, 211), new Point(463, 220), 
-				//Bottom Lot
-				new Point(170, 356), new Point(190, 337), new Point(285, 339)
-		};
-		private Point[] controlAreaEnd = {
-				//Top Lot
-				new Point(243, 220), new Point(345, 219), new Point(470, 227), new Point(558, 232), 
-				//Bottom Lot
-				new Point(210, 384), new Point(251, 375), new Point(337, 382)
-		};
+	private Point[] controlAreaStart = {
+			//Top Lot
+			new Point(190,212), new Point(225,209),new Point(262,210), new Point(298,213),
+			new Point(379,217), new Point(410,220), new Point(450,220), new Point(488,222),
+			new Point(512,225), new Point(185,323), new Point(237,332), new Point(280,333),
+			new Point(328,329), new Point(375,335), new Point(418,335), new Point(418,335), 
+			new Point(418,335), new Point(418,335), new Point(418,335), new Point(418,335), 
+			new Point(418,335), new Point(418,335), new Point(118,364), new Point(176,372), 
+			new Point(227,378), new Point(281,382),new Point(281,382), new Point(281,382)
+	};
+			
+			
+//			new Point(197, 198), new Point(279, 203), new Point(385, 211), new Point(463, 220), 
+//			//Bottom Lot
+//			new Point(170, 356), new Point(190, 337), new Point(285, 339)
+//	};
+	private Point[] controlAreaEnd = {
+			//Top Lot
+			new Point(222,226), new Point(261,227), new Point(296,223), new Point(332,229),
+			new Point(403,228), new Point(439,228), new Point(472,229), new Point(508,234),
+			new Point(540,232), new Point(230,338), new Point(277,349), new Point(325,349),
+			new Point(372,346), new Point(417,348), new Point(459,351), new Point(459,351),
+			new Point(459,351), new Point(459,351), new Point(459,351), new Point(459,351),
+			new Point(459,351), new Point(459,351), new Point(168,389), new Point(222,397), 
+			new Point(281,404), new Point(333,397), new Point(333,397), new Point(333,397)
+	};
+
+			
+			
+//			new Point(243, 220), new Point(345, 219), new Point(470, 227), new Point(558, 232), 
+//			//Bottom Lot
+//			new Point(210, 384), new Point(251, 375), new Point(337, 382)
+//	};
+
 	
 	/**
 	 * @author Ian McElhenny
@@ -74,6 +97,11 @@ public class ParkingLotGrid
 		
 	}
 
+	public void finalize() throws Throwable 
+	{
+
+	}
+	
 	/**
 	 * @author Ian McElhenny
 	 * @param size
@@ -117,9 +145,6 @@ public class ParkingLotGrid
 	
 	
 	//Set the hsv value for each spot (TEMP)
-	/**
-	 * Temporary Test method
-	 */
 	public void setHSV()
 	{
 		for(int i = 0; i <= 8; i++)
@@ -164,7 +189,7 @@ public class ParkingLotGrid
 	
 	//Return array of parking spots
 	/**
-	 * Used to give my object of ParkingSpots to the PredictionModel for logging each spot
+	 * 
 	 * @return ParkingSpots[]
 	 */
 	public ParkingSpots[] getSpotArray()
@@ -174,9 +199,6 @@ public class ParkingLotGrid
 	
 	
 	//A file checking method???-Ian
-	/**
-	 * Sprint 1: Not implemented
-	 */
 	public void updateGrid()
 	{
 
@@ -192,4 +214,5 @@ public class ParkingLotGrid
 	{
 		return this.controlAreaEnd[i];
 	}
+	
 }//end ParkingLotGrid

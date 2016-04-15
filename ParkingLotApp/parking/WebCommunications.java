@@ -30,6 +30,8 @@ import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
+import javafx.scene.image.Image;
+
 /**
  * @author Ian McElhenny, Tim Christovitch, Joshua Swain
  * @version 1.0
@@ -43,7 +45,7 @@ public class WebCommunications
 
 	private ParkingLotGrid parkingLot;
 	//public static Mat imageToProcess;
-	Mat img ;
+	Mat img;
 	Mat crop;
 	//Mat blur = null;
     //Mat hsv = null;
@@ -140,15 +142,20 @@ public class WebCommunications
 	}
 
 	// TODO PROCESS IMAGE REV 2
+	/**
+	 * This method processes a given image name in the file storage area. 
+	 * @author Ian McElhenny
+	 * @param filename
+	 */
 	public void processImageRev2(String filename)
 	{
 		int erosion_size = 7;
 		int x = 5;
 		int y = 5;
 		int spotAvg = 0;
-		int boundT = 50;
-		int boundBT = 72;
-		int boundBB = 58;
+		int boundT = 51;
+		int boundBT = 30;
+		int boundBB = 30;
 		int bound;
 		int ctrl = 98;
 		int tweak = 0;
@@ -164,6 +171,9 @@ public class WebCommunications
 		
 		//Load image from file
 		img = Highgui.imread("src/main/resources/" + filename);
+		
+		//Image image2 = Mat2BufferedImage(img);
+	    //displayImage(image2);
 	    
 		Size size = new Size(img.width(), img.height());
 		gray = Mat.zeros(size , 0);	
@@ -191,19 +201,17 @@ public class WebCommunications
 			crop = img.submat(spotArray[i].getYRange(), spotArray[i].getXRange());
 			
 			//get average for masking (index 4 is for bottom lot, 0 is for top lot)
+			currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(i), parkingLot.getEndPoint(i), img);
 			if(i < 9)
 			{
-				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(0), parkingLot.getEndPoint(0), img);
 				bound = boundT;
 			}
 			else if(i > 8 && i < 22)
 			{
-				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(4), parkingLot.getEndPoint(4), img);
 				bound = boundBT;//top of bottom lot
 			}
 			else
 			{
-				currentCtrlAvg = getGrayAvg(parkingLot.getStartPoint(4), parkingLot.getEndPoint(4), img);
 				bound = boundBB;//bottom of bottom lot
 			}
 			
@@ -232,124 +240,127 @@ public class WebCommunications
 				System.out.println("Spot: " + (i+1) + " is taken");
 				parkingLot.setStatus(i, false);//spot occupied
 			}
-//			System.out.println("Spot Average:" + spotAvg);
-//			System.out.println("Current Average - bound:" + (currentCtrlAvg - bound));
+			System.out.println("Spot Average:" + spotAvg);
+			System.out.println("Current Average - bound:" + (currentCtrlAvg - bound));
 		}
-		
+		//Image image1 = Mat2BufferedImage(img);
+	    //displayImage(image1);
 		//Log results if the spot status changed
 		if(didChange)
 		{
 			try {
 				predictionModel.addToHistory();
 			} catch (IOException e) {
-				System.out.println("IOException: predictionModel.addToHistory()");
+				// TODO Auto-generated catch block
+				System.out.println("IOException: eror calling predictionModel.addToHistory()");
+				e.printStackTrace();
 			}
 		}
 	}
 	
 	//returns a scalar of the average value of the three indexes of sent image. Image is full image, start and end are points on that image.
-		/**
-		 * This method returns a scalar of the average value of the three indexes of sent image. Image is full image, start and end are points on that image.
-		 * @author Ian McElhenny
-		 * @param start
-		 * @param end
-		 * @param hsv
-		 * @return
-		 */
-		public Scalar getHsvAvg(Point start, Point end, Mat hsv)
+	/**
+	 * This method returns a scalar of the average value of the three indexes of sent image. Image is full image, start and end are points on that image.
+	 * @author Ian McElhenny
+	 * @param start
+	 * @param end
+	 * @param hsv
+	 * @return
+	 */
+	public Scalar getHsvAvg(Point start, Point end, Mat hsv)
+	{
+		int x = (int)(end.getX()-start.getX());
+		int y = (int)(end.getY()-start.getY());
+		int one = 0;
+		int two = 0;
+		int three = 0;
+		int count = 0;
+		
+		for(int i = 0; i <= x; i++)
 		{
-			int x = (int)(end.getX()-start.getX());
-			int y = (int)(end.getY()-start.getY());
-			int one = 0;
-			int two = 0;
-			int three = 0;
-			int count = 0;
-			
-			for(int i = 0; i <= x; i++)
+			for(int j = 0; j <= y; j++)
 			{
-				for(int j = 0; j <= y; j++)
-				{
-					one = (one + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[0]);
-					two = (two + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[1]);
-					three = (three + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[2]);
-					count++;
-				}
-				
+				one = (one + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[0]);
+				two = (two + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[1]);
+				three = (three + (int)hsv.get((int)(j + start.getY()), (int)(i + start.getX()))[2]);
+				count++;
 			}
-			one = one/count;
-			two = two/count;
-			three = three/count;
-			
-//			System.out.println("Average");
-//			System.out.println("HSV 1: " + one);
-//			System.out.println("HSV 2: " + two);
-//			System.out.println("HSV 3: " + three + "\n\n");
-			return new Scalar(one, two, three);
 			
 		}
+		one = one/count;
+		two = two/count;
+		three = three/count;
 		
-		//return the average gray pixel given a gray matrix and a start and end point for the region. Image is full size image.
-		/**
-		 * This method will return the average gray pixel given a gray matrix and a start and end point for the region. Image is full size image.
-		 * @author Ian McElhenny
-		 * @param start
-		 * @param end
-		 * @param gray
-		 * @return average (int)
-		 */
-		public int getGrayAvg(Point start, Point end, Mat gray)
+//		System.out.println("Average");
+//		System.out.println("HSV 1: " + one);
+//		System.out.println("HSV 2: " + two);
+//		System.out.println("HSV 3: " + three + "\n\n");
+		return new Scalar(one, two, three);
+		
+	}
+	
+	//return the average gray pixel given a gray matrix and a start and end point for the region. Image is full size image.
+	/**
+	 * This method will return the average gray pixel given a gray matrix and a start and end point for the region. Image is full size image.
+	 * @author Ian McElhenny
+	 * @param start
+	 * @param end
+	 * @param gray
+	 * @return average (int)
+	 */
+	public int getGrayAvg(Point start, Point end, Mat gray)
+	{
+		int x = (int)(end.getX()-start.getX());
+		int y = (int)(end.getY()-start.getY());
+		int one = 0;
+		int count = 0;
+		
+		for(int i = 0; i <= x; i++)
 		{
-			int x = (int)(end.getX()-start.getX());
-			int y = (int)(end.getY()-start.getY());
-			int one = 0;
-			int count = 0;
-			
-			for(int i = 0; i <= x; i++)
+			for(int j = 0; j <= y; j++)
 			{
-				for(int j = 0; j <= y; j++)
-				{
-					one = (one + (int)gray.get((int)(j + start.getY()), (int)(i + start.getX()))[0]); //row, column
-					count++; 
-				}
-				
+				one = (one + (int)gray.get((int)(j + start.getY()), (int)(i + start.getX()))[0]); //row, column
+				count++; 
 			}
-			one = one/count;
-//			System.out.println("Average Gray: " + one);
-			return one;
 			
 		}
+		one = one/count;
+//		System.out.println("Average Gray: " + one);
+		return one;
 		
+	}
+	
+	
+	//returns the average of the submat given, and index controls if it is hsv after gray scale(2) or just gray scale(0).
+	/**
+	 * This method returns the average of the submat given. Index controls if it is hsv after gray scale(2) or just gray scale(0).
+	 * @author Ian McElhenny
+	 * @param img
+	 * @param index
+	 * @return average (int)
+	 */
+	public int getAvg(Mat img, int index)
+	{
+		int x = img.height();
+		int y = img.width();
+		int one = 0;
+		int count = 0;
 		
-		//returns the average of the submat given, and index controls if it is hsv after gray scale(2) or just gray scale(0).
-		/**
-		 * This method returns the average of the submat given. Index controls if it is hsv after gray scale(2) or just gray scale(0).
-		 * @author Ian McElhenny
-		 * @param img
-		 * @param index
-		 * @return average (int)
-		 */
-		public int getAvg(Mat img, int index) {
-			int x = img.height();
-			int y = img.width();
-			int one = 0;
-			int count = 0;
-			
-			for(int i = 0; i < x; i++)
+		for(int i = 0; i < x; i++)
+		{
+			for(int j = 0; j < y; j++)
 			{
-				for(int j = 0; j < y; j++)
-				{
-					one = (one + (int)img.get(i, j)[index]);
-					count++;
-				}
-				
+				one = (one + (int)img.get(i, j)[index]);
+				count++;
 			}
-			one = one/count;
-//			System.out.println("Average");
-//			System.out.println("Average: " + one + "\n\n");
-			return one;
 			
 		}
-
+		one = one/count;
+//		System.out.println("Average");
+//		System.out.println("Average: " + one + "\n\n");
+		return one;
+		
+	}
 	//Takes a img of the parking lot, subdivides it into spots, process each spot in a for loop then 
 	/**
 	 * @author Ian McElhenny
