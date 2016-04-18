@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -78,16 +77,6 @@ public class App extends Application {
 				if (event.getButton() == MouseButton.SECONDARY) GuiView.viewSwitch = !GuiView.viewSwitch;
 			}
 		});
-		/*
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				switch (event.getCode()) {
-					case C:	GuiView.toggleControl = true; break;
-					case V:	GuiView.viewSwitch = !GuiView.viewSwitch; break;
-				}
-			}
-		});*/
 		
 		GuiView.STAGE_INIT = App.primaryStage.getHeight();	//used to determine how the window will change size when animated
 		

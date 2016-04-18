@@ -5,7 +5,6 @@ import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
