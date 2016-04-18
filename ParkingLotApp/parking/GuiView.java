@@ -69,7 +69,7 @@ public class GuiView implements Initializable {
     public static boolean toggleControl = false;	//Used to signal animating control panel
     public static boolean controlsHidden = true;	//Used to signal that control panel is hidden
     public static boolean controlsShown = false;	//Used to signal that control panel is showing
-    public static boolean viewSwitch = true;		//Used to signal animating view switch
+    public static boolean viewSwitch = true;		//Used to signal animating view mode
     
     // TWEAKABLE VALUES
     private final long	 	UPDATE_DELAY 		= 3000,		//How long to wait to start pulling images
