@@ -56,7 +56,7 @@ public class WebCommunications
     Point end;
     
     public static File imageForGUIMadness = new File("src/main/resources/getImageResult.jpg");
-	public static boolean grabFail = false;
+	//public static boolean grabFail = false;
 	private static BufferedImage imageToShow;
     
 	/**
@@ -109,25 +109,15 @@ public class WebCommunications
 	/**
 	 * @author Tim Christovitch
 	 * Saves the image that is pulled from the website to a file
+	 * @throws org.bytedeco.javacv.FrameGrabber.Exception 
+	 * @throws IOException 
 	 */
-	public static void saveImage() 
+	public static void saveImage() throws org.bytedeco.javacv.FrameGrabber.Exception, IOException 
 	{
-		try {
-			frame = grabber.grab();
-			grabFail = false;
-		} catch (Exception e) {
-	    	System.out.println("No grabby grab.");
-	    	grabFail = true;
-	    }
+		frame = grabber.grab();
 		Java2DFrameConverter javaconverter = new Java2DFrameConverter(); 
 		imageToShow = javaconverter.convert(frame);
-		try {
-			ImageIO.write(imageToShow, "jpg", imageForGUIMadness);
-			grabFail = false;
-		} catch (IOException e) {
-			System.out.println("Failed.");
-			grabFail = true;
-		}
+		ImageIO.write(imageToShow, "jpg", imageForGUIMadness);
 	}
 
 	/**

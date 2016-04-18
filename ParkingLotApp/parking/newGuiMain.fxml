@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.shape.*?>
@@ -9,659 +10,900 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:id="parkingGridPane" alignment="CENTER" prefHeight="189.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
-      <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" valignment="CENTER" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
-   </rowConstraints>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="390.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parking.GuiView">
    <children>
-      <ImageView fitHeight="70.0" fitWidth="35.0" pickOnBounds="true">
+      <AnchorPane fx:id="controlPane" layoutX="-3.0" layoutY="278.0" prefHeight="120.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#2f2f2f" height="120.0" layoutX="3.0" layoutY="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="640.0" />
+            <TextFlow layoutY="8.0" prefHeight="60.0" prefWidth="292.0" textAlignment="CENTER">
+               <children>
+                  <Text fx:id="imageLastUpdateText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="HH:mm:ss ZZZ" textAlignment="CENTER">
+                     <font>
+                        <Font name="Glass Gauge" size="46.0" />
+                     </font>
+                  </Text>
+               </children>
+            </TextFlow>
+            <JFXToggleButton fx:id="gridToggle" focusTraversable="false" layoutX="132.0" layoutY="62.0" rotate="180.0" selected="true" toggleColor="#fafafa" toggleLineColor="#999999" visible="false" />
+            <TextFlow layoutX="257.0" layoutY="80.0" prefHeight="24.0" prefWidth="206.0" textAlignment="CENTER">
+               <children>
+                  <Text fx:id="thereAreCurrently" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="There are currently" textAlignment="CENTER">
+                     <font>
+                        <Font name="Tahoma" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </TextFlow>
+            <TextFlow layoutX="412.0" layoutY="65.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="110.0" textAlignment="CENTER">
+               <children>
+                  <Text fx:id="currentSpotsAvailableText" boundsType="VISUAL" fill="WHITE" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="NaN" textAlignment="CENTER" wrappingWidth="76.25390625">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Text>
+               </children>
+            </TextFlow>
+            <TextFlow layoutX="472.0" layoutY="80.0" prefHeight="24.0" prefWidth="168.0" textAlignment="CENTER">
+               <children>
+                  <Text fx:id="spotsAvailable" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="spots available" textAlignment="CENTER" wrappingWidth="165.6044921875">
+                     <font>
+                        <Font name="Tahoma" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </TextFlow>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="42.0" layoutX="430.0" layoutY="20.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="3.0" width="72.0" />
+            <JFXButton fx:id="buttonHelp" focusTraversable="false" layoutX="431.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="70.0" ripplerFill="WHITE" text="Help" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="13.0" />
+               </font>
+            </JFXButton>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="42.0" layoutX="533.0" layoutY="20.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="3.0" width="72.0" />
+            <JFXButton fx:id="buttonQuit" focusTraversable="false" layoutX="534.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="70.0" ripplerFill="WHITE" text="Quit" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="13.0" />
+               </font>
+            </JFXButton>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="42.0" layoutX="326.0" layoutY="20.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="3.0" width="72.0" />
+            <JFXButton fx:id="buttonPredict" focusTraversable="false" layoutX="327.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="70.0" ripplerFill="WHITE" text="Predict" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="13.0" />
+               </font>
+            </JFXButton>
+            <JFXToggleButton fx:id="toggleLabelOverlay" focusTraversable="false" layoutX="164.0" layoutY="64.0" prefHeight="24.0" prefWidth="64.0" toggleColor="LIME" toggleLineColor="#60d360" />
+            <Text fill="WHITE" layoutX="65.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Show Labels">
+               <font>
+                  <Font name="Tahoma" size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="400.0" fitWidth="801.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../src/main/resources/grass.jpg" />
+            <Image url="@../src/main/resources/blankImage.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="70.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="5">
+      <ImageView fx:id="webcamView" fitHeight="400.0" fitWidth="801.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@../src/main/resources/grass.jpg" />
+            <Image url="@../src/main/resources/bottomOpen.JPG" />
          </image>
       </ImageView>
-      <ImageView fitHeight="70.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="12">
+      <ImageView fx:id="spotLabelOverlay" fitHeight="373.0" fitWidth="589.0" layoutX="21.0" layoutY="16.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../src/main/resources/grass.jpg" />
+            <Image url="@../src/main/resources/labels.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="70.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="13">
-         <image>
-            <Image url="@../src/main/resources/grass.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="70.0" fitWidth="35.0" pickOnBounds="true" GridPane.rowIndex="2">
-         <image>
-            <Image url="@../src/main/resources/grass.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="5" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="6" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="7" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="8" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="9" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="10" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="11" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="12" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" GridPane.columnIndex="13" GridPane.rowIndex="1">
-         <image>
-            <Image url="@../src/main/resources/sidewalk.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="imageRoad" fitHeight="80.0" fitWidth="490.0" pickOnBounds="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
-         <image>
-            <Image url="@../src/main/resources/road.jpg" />
-         </image>
-      </ImageView>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="5" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="6" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="7" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="8" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="9" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="10" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="11" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="12" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="13" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="14" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="15" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="16" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="17" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="18" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="19" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="20" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="21" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="22" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="23" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="25" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="24" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="26" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="27" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="28" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="8.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="1.0" />
-         </GridPane.margin>
-      </Text>
-      <ImageView fx:id="carIcon1" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon2" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon3" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon4" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon5" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon6" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon7" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon8" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon9" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon10" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon11" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon12" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon13" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon14" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon15" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon16" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon17" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon18" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon19" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon20" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon21" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon22" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon23" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon24" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon25" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon26" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon27" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <ImageView fx:id="carIcon28" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="7.0" />
-         </GridPane.margin>
-      </ImageView>
-      <Circle fill="#1f93ff00" radius="15.0" stroke="BLUE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="11" />
-      <Text fill="BLUE" strokeType="OUTSIDE" strokeWidth="0.0" text="R" GridPane.columnIndex="11">
-         <font>
-            <Font name="Arial Narrow Bold" size="24.0" />
-         </font>
-         <GridPane.margin>
-            <Insets left="1.0" />
-         </GridPane.margin>
-      </Text>
-      <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" GridPane.columnIndex="6" GridPane.rowIndex="4">
-         <image>
-            <Image url="@../src/main/resources/tree.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" GridPane.columnIndex="7" GridPane.rowIndex="4">
-         <image>
-            <Image url="@../src/main/resources/tree.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" GridPane.columnIndex="8" GridPane.rowIndex="4">
-         <image>
-            <Image url="@../src/main/resources/tree.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" GridPane.columnIndex="9" GridPane.rowIndex="4">
-         <image>
-            <Image url="@../src/main/resources/tree.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" GridPane.columnIndex="10" GridPane.rowIndex="4">
-         <image>
-            <Image url="@../src/main/resources/tree.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="imageTree" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" GridPane.columnIndex="11" GridPane.rowIndex="4">
-         <image>
-            <Image url="@../src/main/resources/tree.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" GridPane.columnIndex="12" GridPane.rowIndex="4">
-         <image>
-            <Image url="@../src/main/resources/tree.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" GridPane.columnIndex="13" GridPane.rowIndex="4">
-         <image>
-            <Image url="@../src/main/resources/tree.jpg" />
-         </image>
-      </ImageView>
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="20.0" stroke="BLACK" width="490.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="1" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="3" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="4" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="6" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="7" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="8" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="9" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="10" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="11" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="8" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="9" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="10" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="11" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="12" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="13" GridPane.rowIndex="2" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.rowIndex="4" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="70.0" stroke="BLACK" width="35.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="310.0" stroke="BLACK" strokeWidth="3.0" width="490.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-      <Rectangle arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" width="490.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+      <Pane fx:id="paneSpotLabelOverlay" prefHeight="400.0" prefWidth="640.0" visible="false">
+         <children>
+            <Text fill="LIME" layoutX="158.0" layoutY="204.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="1">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font></Text>
+            <Text fill="LIME" layoutX="187.0" layoutY="205.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="2">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="216.0" layoutY="207.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="3">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="248.0" layoutY="209.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="4">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="311.0" layoutY="212.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="5">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="340.0" layoutY="213.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="6">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="372.0" layoutY="214.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="7">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="401.0" layoutY="215.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="8">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="426.0" layoutY="216.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="9">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="BLUE" layoutX="449.0" layoutY="215.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="R">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="157.0" layoutY="260.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="10">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="195.0" layoutY="265.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="11">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="230.0" layoutY="265.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="12">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="266.0" layoutY="265.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="13">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="301.0" layoutY="265.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="14">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="336.0" layoutY="265.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="15">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="369.0" layoutY="265.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="16">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="398.0" layoutY="265.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="17">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="426.0" layoutY="263.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="18">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="454.0" layoutY="265.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="19">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="479.0" layoutY="263.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="20">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="504.0" layoutY="263.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="21">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="528.0" layoutY="262.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="22">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="102.0" layoutY="336.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="23">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="153.0" layoutY="336.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="24">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="195.0" layoutY="336.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="25">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="239.0" layoutY="336.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="26">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="285.0" layoutY="335.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="27">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+            <Text fill="LIME" layoutX="331.0" layoutY="336.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.5" text="28">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <GridPane fx:id="parkingGridPane" alignment="CENTER" opacity="0.0" prefHeight="400.0" prefWidth="640.0">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="120.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" valignment="CENTER" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Rectangle arcWidth="5.0" fill="WHITE" height="400.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="640.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+            <ImageView fitHeight="80.0" fitWidth="45.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../src/main/resources/grass.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="80.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="5">
+               <image>
+                  <Image url="@../src/main/resources/grass.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="80.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="12">
+               <image>
+                  <Image url="@../src/main/resources/grass.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="80.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="13">
+               <image>
+                  <Image url="@../src/main/resources/grass.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="80.0" fitWidth="45.0" pickOnBounds="true" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../src/main/resources/grass.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imageRoad" fitHeight="120.0" fitWidth="638.0" pickOnBounds="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+               <image>
+                  <Image url="@../src/main/resources/road.jpg" />
+               </image>
+            </ImageView>
+            <Rectangle arcHeight="5.0" fill="#ffffff00" height="120.0" stroke="BLACK" strokeType="INSIDE" width="630.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+            <Rectangle arcHeight="5.0" fill="#ffffff00" height="400.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="5.0" width="640.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="5" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="6" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="7" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="8" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="9" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="10" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="11" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="12" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" GridPane.columnIndex="13" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../src/main/resources/sidewalk.jpg" />
+               </image>
+            </ImageView>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="5" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="6" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="7" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="8" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="9" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="10" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="11" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="12" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="13" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="14" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="15" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="16" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="17" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="18" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="19" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="20" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="21" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="22" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="1.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="23" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="25" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="24" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="26" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="27" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="28" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+            </Text>
+            <ImageView fx:id="carIcon1" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon2" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon3" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon4" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon5" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon6" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon7" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon8" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon9" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon10" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon11" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon12" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon13" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon14" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon15" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon16" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon17" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon18" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon19" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon20" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon21" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon22" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="7.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon23" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="14.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon24" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="14.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon25" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="14.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon26" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="14.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon27" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="14.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fx:id="carIcon28" fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../src/main/resources/Car-Top-Red-icon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="14.0" />
+               </GridPane.margin>
+            </ImageView>
+            <Circle fill="#1f93ff00" radius="15.0" stroke="BLUE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="11" />
+            <Text fill="BLUE" strokeType="OUTSIDE" strokeWidth="0.0" text="R" GridPane.columnIndex="11">
+               <font>
+                  <Font name="Arial Narrow Bold" size="24.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="1.0" />
+               </GridPane.margin>
+            </Text>
+            <ImageView fitHeight="200.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../src/main/resources/tree.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="200.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../src/main/resources/tree.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="200.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../src/main/resources/tree.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="200.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="9" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../src/main/resources/tree.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="200.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="10" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../src/main/resources/tree.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imageTree" fitHeight="200.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="11" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../src/main/resources/tree.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="200.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="12" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../src/main/resources/tree.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="200.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="13" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../src/main/resources/tree.jpg" />
+               </image>
+            </ImageView>
+            <Rectangle arcHeight="5.0" fill="#ffffff00" height="40.0" stroke="BLACK" strokeType="INSIDE" width="630.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+            <Rectangle fx:id="spot1" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="1" />
+            <Rectangle fx:id="spot2" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="2" />
+            <Rectangle fx:id="spot3" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="3" />
+            <Rectangle fx:id="spot4" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="4" />
+            <Rectangle fx:id="spot5" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="6" />
+            <Rectangle fx:id="spot6" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="7" />
+            <Rectangle fx:id="spot7" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="8" />
+            <Rectangle fx:id="spot8" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="9" />
+            <Rectangle fx:id="spot9" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="10" />
+            <Rectangle arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="11" />
+            <Rectangle fx:id="spot10" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot11" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot12" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot13" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot14" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot15" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot16" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot17" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="8" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot18" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="9" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot19" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="10" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot20" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="11" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot21" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="12" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot22" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="13" GridPane.rowIndex="2" />
+            <Rectangle fx:id="spot23" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.rowIndex="4" />
+            <Rectangle fx:id="spot24" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Rectangle fx:id="spot25" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Rectangle fx:id="spot26" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Rectangle fx:id="spot27" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <Rectangle fx:id="spot28" arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <Rectangle arcWidth="5.0" fill="#1f93ff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="360.0" GridPane.columnIndex="6" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
+            <Rectangle arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+            <Rectangle arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.rowIndex="2" />
+            <Rectangle arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="5" />
+            <Rectangle arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="12" />
+            <Rectangle arcHeight="5.0" fill="#ffffff00" height="80.0" stroke="BLACK" strokeType="INSIDE" width="45.0" GridPane.columnIndex="13" />
+         </children>
+      </GridPane>
+      <Rectangle fx:id="mainArea" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="400.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="640.0" />
    </children>
-</GridPane>
+</AnchorPane>
