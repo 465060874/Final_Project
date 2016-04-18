@@ -5,6 +5,7 @@ import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -156,7 +157,8 @@ public class GuiView implements Initializable {
 	 */
 	public void showUserGuide() {
 		buttonHelp.setOnAction(e -> {
-			System.out.println("Tim's not done yet.");
+			System.out.println("Tim's done.");
+			showHelpPanel();
 		});
 	}
 	
@@ -434,5 +436,16 @@ public class GuiView implements Initializable {
 		update();		//executes updateTimer
 		process();		//executes processTimer
 		animate();		//executes animateTimer
+	}
+	
+	/**
+	 * Shows the help panel for the application
+	 */
+	public void showHelpPanel(){
+		    Platform.runLater(new Runnable() {
+		       public void run() {             
+		           new HelpPanel().start(new Stage());
+		       }
+		    });
 	}
 } //end GuiView
